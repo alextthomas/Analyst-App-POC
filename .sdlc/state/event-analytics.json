@@ -1,0 +1,26 @@
+{
+  "feature": "event-analytics",
+  "tier": 3,
+  "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
+  "phase": "P1",
+  "status": "awaiting:HG-0",
+  "branch": "chore/hg-0-project-init",
+  "ui_in_scope": true,
+  "artifacts": {
+    "charter": { "path": "docs/project-charter.md", "sha": null },
+    "handbook": { "path": "CLAUDE.md", "sha": null }
+  },
+  "gates": {
+    "HG-0": { "status": "pending" },
+    "HG-1": { "status": "pending" },
+    "HG-2": { "status": "pending" },
+    "HG-3": { "status": "pending" },
+    "HG-4": { "status": "pending", "note": "Mandatory for Tier 3" },
+    "HG-5": { "status": "pending" },
+    "HG-6": { "status": "pending" }
+  },
+  "review_rounds": 0,
+  "open_blocking_findings": 0,
+  "head_sha": "4047f29",
+  "updated_at": "2026-10-21T00:00:00Z"
+}
