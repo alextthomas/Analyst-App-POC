@@ -4,14 +4,14 @@
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P1",
   "status": "awaiting:HG-0",
-  "branch": "chore/hg-0-project-init",
+  "branch": "main",
   "ui_in_scope": true,
   "artifacts": {
-    "charter": { "path": "docs/project-charter.md", "sha": null },
-    "handbook": { "path": "CLAUDE.md", "sha": null }
+    "charter": { "path": "docs/project-charter.md", "sha": "9952984" },
+    "handbook": { "path": "CLAUDE.md", "sha": "9952984" }
   },
   "gates": {
-    "HG-0": { "status": "pending" },
+    "HG-0": { "status": "unverified", "sha": "9952984", "record": "PR #1 merged by alextthomas as 30d8b43 with no approving review; main unprotected" },
     "HG-1": { "status": "pending" },
     "HG-2": { "status": "pending" },
     "HG-3": { "status": "pending" },
@@ -21,6 +21,6 @@
   },
   "review_rounds": 0,
   "open_blocking_findings": 0,
-  "head_sha": "4047f29",
-  "updated_at": "2026-10-21T00:00:00Z"
+  "head_sha": "30d8b43",
+  "updated_at": "2026-10-21T17:30:00Z"
 }
