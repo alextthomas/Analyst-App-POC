@@ -17,8 +17,8 @@
     },
     "prd": {
       "path": "docs/requirements/event-analytics.md",
-      "revision": 9,
-      "sha": "3d33397"
+      "revision": 11,
+      "sha": "cf5c048"
     }
   },
   "gates": {
@@ -30,9 +30,9 @@
     },
     "HG-1": {
       "status": "awaiting",
-      "sha": "3d33397",
+      "sha": "cf5c048",
       "record": "PR #3",
-      "review": "critical review round 3 PASS WITH NON-BLOCKING FINDINGS"
+      "review": "critical review round 4 (final) PASS WITH NON-BLOCKING FINDINGS"
     },
     "HG-C-1": {
       "status": "awaiting",
@@ -57,12 +57,17 @@
     }
   },
   "review_rounds": 0,
-  "prd_review_rounds": 3,
+  "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "3d33397",
+  "head_sha": "cf5c048",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)"
   ],
-  "updated_at": "2026-10-21T19:02:40.269Z",
-  "open_nonblocking_findings": 16
+  "updated_at": "2026-10-21T19:37:06.131Z",
+  "open_nonblocking_findings": 12,
+  "tracked_medium_findings_needing_owner": [
+    "CR-event-analytics-029",
+    "CR-event-analytics-036",
+    "CR-event-analytics-048"
+  ]
 }

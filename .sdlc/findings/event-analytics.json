@@ -22,6 +22,14 @@
       "reviewers": [
         "critical-reviewer"
       ]
+    },
+    {
+      "round": 4,
+      "sha": "cf5c048",
+      "reviewers": [
+        "critical-reviewer"
+      ],
+      "final": true
     }
   ],
   "findings": [
@@ -41,9 +49,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -51,6 +60,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -71,9 +84,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -81,6 +95,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -101,9 +119,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -111,6 +130,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -131,9 +154,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -141,6 +165,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -161,9 +189,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -171,6 +200,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -191,9 +224,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -201,6 +235,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -221,9 +259,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -231,6 +270,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -251,9 +294,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -261,6 +305,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -281,9 +329,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -291,6 +340,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -311,9 +364,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -321,6 +375,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -341,9 +399,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -351,6 +410,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -371,9 +434,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -381,6 +445,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -401,9 +469,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -411,6 +480,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -431,9 +504,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -441,6 +515,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -461,9 +539,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -471,6 +550,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -491,9 +574,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -501,6 +585,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -521,9 +609,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -531,6 +620,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -551,9 +644,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -561,6 +655,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -581,9 +679,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -591,6 +690,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -611,9 +714,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -621,6 +725,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -641,9 +749,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -651,6 +760,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -671,9 +784,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -681,6 +795,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -701,9 +819,10 @@
       "source": [
         "reports/review/event-analytics-critical-59d8755.json",
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "d87700d",
@@ -711,6 +830,10 @@
         },
         {
           "sha": "3d33397",
+          "status": "fix-proposed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "fix-proposed"
         }
       ]
@@ -730,12 +853,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -755,12 +883,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -780,12 +913,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -805,12 +943,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -830,12 +973,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -855,12 +1003,17 @@
       "status": "open",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "open"
+        },
+        {
+          "sha": "cf5c048",
           "status": "open"
         }
       ]
@@ -880,12 +1033,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -905,12 +1063,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -930,12 +1093,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -955,12 +1123,17 @@
       "status": "verified-fixed",
       "source": [
         "reports/review/event-analytics-critical-d87700d.json",
-        "reports/review/event-analytics-critical-3d33397.json"
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
       ],
-      "last_seen_sha": "3d33397",
+      "last_seen_sha": "cf5c048",
       "history": [
         {
           "sha": "3d33397",
+          "status": "verified-fixed"
+        },
+        {
+          "sha": "cf5c048",
           "status": "verified-fixed"
         }
       ]
@@ -977,8 +1150,18 @@
       "blocking": false,
       "title": "Deletion ledger readable only by the purge process, yet intake and replay must check it",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "0c53167a290c9a3e256e892b0463149e63f8c948",
@@ -992,8 +1175,18 @@
       "blocking": false,
       "title": "Erased subjects' dead-letter bodies remain revealable, and AC-11.7 contradicts the AC-10.6 reveal",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "d92b5beb79e601ff80ec7ea17e301f285af6bb6f",
@@ -1008,7 +1201,17 @@
       "title": "Global sign-in throttle lets an attacker lock out all staff and contradicts the claim that a legitimate admin can still sign in",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "68ed2ee62ffd854c196c36ed2ca40b3a9b9367c5",
@@ -1022,8 +1225,18 @@
       "blocking": false,
       "title": "Step-up list declared exact omits MFA reset, which REQ-27 and AC-16.9 require step-up for",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "503361cca67035d20bb20e81928243d1435fba0f",
@@ -1037,8 +1250,18 @@
       "blocking": false,
       "title": "Objection stops new events but stored data stays in processing; Art. 17(1)(c) and compelling grounds not addressed",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "eb91bc469708099462eb01e0d903279d6f3e1e80",
@@ -1052,8 +1275,18 @@
       "blocking": false,
       "title": "Manual rectification and restriction rely on direct operator store changes with no mechanism, audit or restriction semantics",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "dcebdb20e5852ef5cd4837508e7f6c5513e2c73d",
@@ -1067,8 +1300,18 @@
       "blocking": false,
       "title": "Restore can lose recent deletion-ledger and suppression-list entries within the 5-minute RPO, so erased data can reappear",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "07cbaec9367501a987bd31a607dffde1ebd294f8",
@@ -1082,8 +1325,18 @@
       "blocking": false,
       "title": "Pending HG-C charter amendment understates raw-PII retention in the messaging layer relative to PRD revision 9",
       "first_seen_sha": "3d33397",
-      "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
     },
     {
       "fingerprint": "6f958cb91e839014755676e785d9004866dfbcc9",
@@ -1098,7 +1351,17 @@
       "title": "Future-timestamp bound is relative to the producer-controlled send time, so future-dated events are unbounded",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "a2b4b17c61404d9d495e7d460a042987e08a037b",
@@ -1113,7 +1376,17 @@
       "title": "Re-processing capability that justifies 24 h post-acknowledgement raw-PII retention is not specified, audited or tested",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "9d4a5dddfab7ca6e880d61df09eb81ea643aff67",
@@ -1128,7 +1401,17 @@
       "title": "AC-14.6 bound of 10 per-minute records in 10 minutes is off by one for windows not aligned to the minute",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "477f20c54e0f327c98c39dea16b38988e44d3d9e",
@@ -1143,7 +1426,17 @@
       "title": "Verification-reference tenant coverage is self-attested by the admin running the request",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "c82bcddd16fc10c25110cf45c05046485ec37cff",
@@ -1158,7 +1451,17 @@
       "title": "Dead-letter bounds count messages, not bytes",
       "first_seen_sha": "3d33397",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "open"
+        }
+      ]
     },
     {
       "fingerprint": "0716cdcbe4ad5080d6fef73690f6f6e8cd7f8f5e",
@@ -1172,8 +1475,78 @@
       "blocking": false,
       "title": "Gate state binds HG-1 to PRD revision 5 (59d8755) while revision 9 is under review",
       "first_seen_sha": "3d33397",
+      "status": "verified-fixed",
+      "source": [
+        "reports/review/event-analytics-critical-3d33397.json",
+        "reports/review/event-analytics-critical-cf5c048.json"
+      ],
+      "last_seen_sha": "cf5c048",
+      "history": [
+        {
+          "sha": "cf5c048",
+          "status": "verified-fixed"
+        }
+      ]
+    },
+    {
+      "fingerprint": "25f4e97123b42c4a52dd539f357b4ae4a27f3b50",
+      "ids": [
+        "CR-event-analytics-048"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Restriction list has no erasure, retention-purge or subject-access semantics",
+      "first_seen_sha": "cf5c048",
       "status": "open",
-      "source": "reports/review/event-analytics-critical-3d33397.json"
+      "source": "reports/review/event-analytics-critical-cf5c048.json"
+    },
+    {
+      "fingerprint": "65c1f05303d50851b1adbfc3e5b700f47caeaa5d",
+      "ids": [
+        "CR-event-analytics-049"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "RPO 0 for privacy-control stores is tested only against event-store failure, and the 5-second audit write window contradicts RPO 0 for the audit log",
+      "first_seen_sha": "cf5c048",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-cf5c048.json"
+    },
+    {
+      "fingerprint": "eca84aa5adff922ae9c7771896891e06a3e8a800",
+      "ids": [
+        "CR-event-analytics-050"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "Step-up minimum omits account disable, credential revocation and dead-letter replay or discard",
+      "first_seen_sha": "cf5c048",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-cf5c048.json"
+    },
+    {
+      "fingerprint": "412a2ae10681c4289b0e0294ae9f965ddb1ebe07",
+      "ids": [
+        "CR-event-analytics-051"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "Reviewed-script control for manual data changes is self-review under R-5 and its no-direct-edit clause is not testable",
+      "first_seen_sha": "cf5c048",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-cf5c048.json"
     }
   ]
 }
