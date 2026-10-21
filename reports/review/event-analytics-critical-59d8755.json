@@ -1,0 +1,513 @@
+[
+  {
+    "id": "CR-event-analytics-001",
+    "fingerprint": "cfb4eb1e482b058bb3a2ba6f4e620883a88273b2",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "High",
+    "category": "privacy/gdpr-erasure",
+    "title": "Erasure scope excludes backups, dead-letter, messaging layer and restore",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "49,50,146,154,213"
+    },
+    "evidence": "AC-11.2 (l.146) requires 0 records only 'in primary storage'. REQ-17/AC-12.1 purge backups within 35 days only for retention expiry, not for DSAR deletion. REQ-16 (l.48) allows raw PII, including the producer user id, in dead-letter messages for up to 7 days and in the messaging layer. No requirement covers those stores during an erasure. NFR-7 (l.213) requires restore from backup (RPO 5 min), and no requirement stops a restore from bringing back data that was already erased or purged. AC-12.2 forbids resurrection only when retention is lengthened.",
+    "requirement_refs": [
+      "REQ-17",
+      "REQ-18",
+      "AC-11.2",
+      "AC-12.1",
+      "AC-12.2",
+      "NFR-7",
+      "NFR-16"
+    ],
+    "rationale": "Art. 17 erasure must reach every copy the controller holds, or the residual copies must be documented and kept out of use (for example, deletion is re-applied after a restore). As written, a subject's data survives an erasure in backups (indefinitely for DSAR), in dead-letter messages (raw, up to 7 days) and in the broker. A restore can bring erased data back.",
+    "recommended_fix": "Add a REQ/AC: DSAR deletion covers primary store, dead-letter store, messaging layer and derived aggregates, and backups within a stated bound (e.g. 35 days). Keep a non-identifying deletion ledger that is re-applied after any restore. Add the restore case to AC-12.2.",
+    "verification": "PRD revision contains ACs for each store plus a restore-then-verify AC; PO confirms the backup erasure bound.",
+    "blocking": true,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-002",
+    "fingerprint": "9a04575274c4d1b0fadf50e3b159e4e4ccee0eeb",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "High",
+    "category": "privacy/minimisation",
+    "title": "Messaging layer persists raw PII without limit, contradicting REQ-16",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "40,48,89,208,223"
+    },
+    "evidence": "REQ-16: 'No raw PII shall be persisted' and stripping happens before the event store, but raw PII is 'allowed transiently ... in transit'. REQ-8, AC-4.1 (15-minute consumer outage with 0 loss) and NFR-2 (20k/s burst buffered) can only be met if the broker durably persists un-stripped events. No retention bound applies to broker storage or its volumes or backups. NFR-17's scan list (event store, backups, logs, traces) leaves out the messaging layer.",
+    "requirement_refs": [
+      "REQ-8",
+      "REQ-16",
+      "AC-4.1",
+      "AC-13.1",
+      "NFR-2",
+      "NFR-17"
+    ],
+    "rationale": "'In transit' silently covers durable at-rest storage of raw email, phone, IP and user id. That is an internal contradiction and an unbounded PII store with no scan or retention control.",
+    "recommended_fix": "State explicitly that broker persistence is at-rest storage. Set a maximum broker retention for raw events (e.g. no more than X hours after acknowledgement by the stripper), apply NFR-12 encryption to it, and add the broker and its backups to the AC-13.1/NFR-17 scans. Alternatively require stripping before publish in the client kit, and record that as a PO decision.",
+    "verification": "PRD states a broker retention bound and the scan scope includes the broker.",
+    "blocking": true,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-003",
+    "fingerprint": "e04d0d9041e734e744140682a7aae8a93686d9be",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "High",
+    "category": "security/authentication",
+    "title": "Unauthorised and revoked publishers are accepted into the dead-letter store",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "34,38,128,200,201"
+    },
+    "evidence": "REQ-6, AC-9.1, AC-17.3 and AC-17.4 say events from wrong-tenant, expired-rotation or revoked credentials are 'rejected and dead-lettered with reason unauthorised'. So publishes from invalid credentials are still accepted and stored. REQ-2 forbids any rate limit. AC-9.1 does not say which tenant's dead-letter count or store receives a cross-tenant attempt.",
+    "requirement_refs": [
+      "REQ-2",
+      "REQ-6",
+      "REQ-14",
+      "AC-9.1",
+      "AC-17.3",
+      "AC-17.4",
+      "NFR-10"
+    ],
+    "rationale": "A revoked or leaked credential can write unbounded data, including arbitrary 'PII', into platform storage. It can also fill the dead-letter store and the admin screen (DoS) and inflate another tenant's dead-letter counts. Revocation then does not actually stop the writes. This also fixes a design choice (dead-letter rather than refusal at the broker) inside the requirements.",
+    "recommended_fix": "Require that publishes with an unknown, revoked or expired credential are refused at the messaging layer and only counted/audited, never stored. Keep dead-lettering for authenticated producers whose payload is invalid or which target the wrong tenant. Bound dead-letter storage per credential and per tenant, and define which tenant a cross-tenant attempt is attributed to.",
+    "verification": "Revised AC-17.3/17.4: a publish with a revoked credential is refused and nothing is stored; there is an AC for dead-letter quota behaviour.",
+    "blocking": true,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-004",
+    "fingerprint": "d60b72c327eddc05da066432ac4335fe0bbc2bec",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "High",
+    "category": "privacy/legal-basis",
+    "title": "Lawful basis, ePrivacy, DPIA and transparency not stated",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "51,166,236"
+    },
+    "evidence": "REQ-19 says no consent is recorded. The PRD names no lawful basis (Art. 6) for processing pseudonymous ids and hashed device ids. A-6 says GDPR is 'the only applicable regulation', yet AC-13.5 processes a device identifier read from end-user terminal equipment, which ePrivacy Art. 5(3)/PECR regulates independently of GDPR. There is no requirement for a DPIA (Art. 35) on a Tier 3 system with many producer apps, no Art. 13/14 information duty for producer apps, and no controller/processor roles between departments and the platform.",
+    "requirement_refs": [
+      "REQ-19",
+      "REQ-16",
+      "A-6",
+      "NFR-15",
+      "NFR-16",
+      "NFR-17"
+    ],
+    "rationale": "The charter (Section 6) requires the PRD to state privacy obligations. Without consent, a lawful basis and an ePrivacy position are prerequisites, and the device-id choice may be unlawful without consent. This is not a compliance assessment; a DPO/legal review is needed.",
+    "recommended_fix": "Add NFRs or dependencies: stated lawful basis per data element; ePrivacy position on device id (or drop the device hash); DPIA completed before HG-4; producer onboarding obligation to provide a privacy notice; RoPA entry. Revisit A-6.",
+    "verification": "PRD revision with these items, plus a recorded DPO/legal sign-off or an open question routed to the PO.",
+    "blocking": true,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-005",
+    "fingerprint": "166e95fe43ebaf713f0049c4c3ea84983c185ed1",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "High",
+    "category": "security/authentication",
+    "title": "Admin role protected by password only",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "45,56,121,254"
+    },
+    "evidence": "REQ-13 and REQ-24 define single-factor password accounts for both roles. Admin can export any subject's data across all tenants (AC-11.1), inspect raw-PII dead-letter messages (REQ-15), mint producer credentials and see every reset link. R-4 rates the admin surface High risk but its mitigation lists no stronger authentication. No re-authentication is required for destructive actions (DSAR deletion, discard).",
+    "requirement_refs": [
+      "REQ-13",
+      "REQ-15",
+      "REQ-18",
+      "REQ-24",
+      "R-4",
+      "NFR-10"
+    ],
+    "rationale": "For a Tier 3 system, single-factor admin auth is a significant security weakness (OWASP A07). One phished password exposes all tenants' personal data.",
+    "recommended_fix": "Require MFA for role admin (and optionally for all users) plus step-up re-authentication for DSAR export/deletion, dead-letter inspection and credential creation. Alternatively record an explicit PO/Security Lead risk acceptance for v1 staging-only use.",
+    "verification": "New AC: an admin without a second factor cannot reach the admin screen; step-up is required for the listed actions.",
+    "blocking": true,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-006",
+    "fingerprint": "b542b05c177d6c69813950d27ced14214bc9f3d2",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/contradiction",
+    "title": "No-loss durability contradicts RPO 5 min",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "211,213"
+    },
+    "evidence": "NFR-5: 'No loss of acknowledged events'. NFR-7: store failure recovery 'RPO <= 5 min', which allows up to 5 minutes of acknowledged events to be lost unless they can be replayed from the broker. That replay would in turn need longer raw-PII broker retention (see CR-002). Neither the PRD nor the ADR dependencies list says which applies.",
+    "requirement_refs": ["NFR-5", "NFR-7", "REQ-8"],
+    "rationale": "An implementer cannot satisfy both literally. Testers will not know whether a 5-minute gap after restore is a pass.",
+    "recommended_fix": "State that NFR-5 covers consumer outages and NFR-7 covers store loss, with an accepted loss window. Or require replay from the broker to close the RPO gap, and tie it to the broker retention bound.",
+    "verification": "PRD states the reconciled rule and an AC for store-failure recovery.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-007",
+    "fingerprint": "444231dbf210d44fd15ce5312134ffa5863ac7f8",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/ambiguity",
+    "title": "Deduplication scope and window undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "39,138,182"
+    },
+    "evidence": "REQ-7: 'an event with the same unique event id shall be counted once'. The PRD does not say whether ids are unique per tenant or globally, how long the dedup window lasts, or what happens to a replayed dead-letter event whose id is already stored, or to an id redelivered after DSAR deletion or purge.",
+    "requirement_refs": ["REQ-7", "AC-15.2", "AC-10.2"],
+    "rationale": "With a global key, one tenant's producer can suppress another tenant's events by reusing ids (cross-tenant interference). An unbounded window has storage and cost implications. A redelivery after erasure can bring a deleted event back.",
+    "recommended_fix": "Define the dedup key as (tenant, event id), set a dedup window, and add ACs for replay of an already-stored id and redelivery after deletion.",
+    "verification": "ACs added; isolation test includes duplicate ids across tenants.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-008",
+    "fingerprint": "ed85c85b8dea62114eb58bbd4f126cca0f9d24aa",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/ambiguity",
+    "title": "Event time, time zone and late-arrival semantics undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "42,97,107,154"
+    },
+    "evidence": "Date ranges, time series, previous-period comparison and retention ('events older than N days') never say whether they use producer event time or ingest time, which time zone defines a day boundary (only audit has UTC, AC-14.1), or how late events (buffered 15+ min, AC-4.1/4.3), future-dated or skewed timestamps are handled.",
+    "requirement_refs": [
+      "REQ-10",
+      "REQ-12",
+      "REQ-17",
+      "AC-5.1",
+      "AC-6.2",
+      "AC-12.1"
+    ],
+    "rationale": "AC-5.1 demands tolerance 0 against 'a direct count for that range', which cannot be checked without a time basis. Retention can also be bypassed by back-dated or future-dated timestamps.",
+    "recommended_fix": "Specify the time basis for aggregation and for retention, the dashboard time zone, and the accepted clock-skew bound (with a dead-letter reason for out-of-bounds timestamps).",
+    "verification": "ACs added for late, future-dated and day-boundary events.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-009",
+    "fingerprint": "0cfbeb71cc4f606f934a4a4a6e421c8c006c40c9",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/testability",
+    "title": "Unmeasurable or disjunctive acceptance criteria",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "65,67,90,122,146,209"
+    },
+    "evidence": "'nominal load' is undefined (AC-1.1, AC-4.1, NFR-3). AC-1.3 says '100% ... ultimately stored', with no drain bound. AC-4.2 says 'up to a configured limit', with no default or minimum. AC-8.3 says 'throttled or locked', with no duration or unlock rule. AC-11.2 says 'aggregates are recomputed or confirmed non-identifying', with no criterion for 'non-identifying'.",
+    "requirement_refs": [
+      "AC-1.1",
+      "AC-1.3",
+      "AC-4.2",
+      "AC-8.3",
+      "AC-11.2",
+      "NFR-3"
+    ],
+    "rationale": "The Phase 2 quality check requires testable ACs and measurable NFRs. These pass for any outcome.",
+    "recommended_fix": "Define nominal load (e.g. 1,000 events/s), a drain bound for AC-1.3, a default buffer size, the lockout duration and unlock path, and pick one of the two aggregate-handling outcomes with a measurable check.",
+    "verification": "Each listed term replaced by a numeric or binary criterion.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-010",
+    "fingerprint": "3b36fe19e07c538c9f59703f0fb180e98a1d683c",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "privacy/minimisation",
+    "title": "Hashed device id has no purpose and is outside DSAR",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "48,50,166,251"
+    },
+    "evidence": "REQ-16/AC-13.5 keep a per-tenant hashed device id, and R-1 accepts it as personal data. Q-25 limits the pseudonymous id to counts and GDPR, but no use is stated for the device hash. REQ-18 runs DSAR only 'by pseudonymous id'. The contract does not say whether the user id is mandatory, so device-only (anonymous) events cannot be found or erased.",
+    "requirement_refs": ["REQ-16", "REQ-18", "AC-13.5", "R-1"],
+    "rationale": "Purpose limitation and minimisation (Art. 5(1)(b)(c)): personal data with no stated purpose should not be kept. It also leaves an erasure gap.",
+    "recommended_fix": "State the purpose of the device hash or drop it. State whether user id is mandatory. Extend DSAR to the device hash, or document why it is out of scope.",
+    "verification": "PRD states the purpose and the DSAR coverage, with an AC.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-011",
+    "fingerprint": "f46c063ee07af98e51f31f6054228ecac46eaf5c",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "privacy/minimisation",
+    "title": "PII in allow-listed values and raw user agent not addressed",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "35,37,48,164,166"
+    },
+    "evidence": "Allow-listing is by key only (REQ-16, AC-13.3), so an allowed key such as a search term or URL can carry an email in its value. Raw user agent is not listed as PII and AC-13.5 does not require it to be absent. REQ-3 puts the allow-list in the versioned contract, so a new app needing a new key requires a contract release. That conflicts with REQ-5 'configuration only'.",
+    "requirement_refs": ["REQ-3", "REQ-5", "REQ-16", "AC-13.3", "AC-13.5"],
+    "rationale": "Leaves an obvious PII leakage path and a reusability contradiction.",
+    "recommended_fix": "Require value-level PII detection or typed and bounded values for allowed keys, and drop the raw UA after deriving its family. State who owns the allow-list (per tenant via admin, or in the contract).",
+    "verification": "ACs: an email in an allowed value is not stored; raw UA is absent; adding a key needs no service change.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-012",
+    "fingerprint": "9dd236c3a684cc79936da7c8c0a0c05c45cda199",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "security/audit",
+    "title": "Dead-letter inspection exposes raw PII and audit list is incomplete",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "47,52,138"
+    },
+    "evidence": "REQ-15 lets an admin 'inspect' dead-lettered events, which may contain raw PII (REQ-16), with no masking requirement. REQ-20's audit list includes replay and discard but not inspection/view, DSAR export download, role change, password change, the setup command or audit-log viewing.",
+    "requirement_refs": ["REQ-15", "REQ-20", "AC-14.1", "NFR-13"],
+    "rationale": "Access to raw personal data is the most privacy-relevant action, and it is neither minimised nor audited.",
+    "recommended_fix": "Mask PII fields in dead-letter inspection by default (reveal needs a reason and is audited). Extend the REQ-20 list.",
+    "verification": "ACs for masked view and audit entries for each added action.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-013",
+    "fingerprint": "c049bb56338e40a6b07c020a0ed85e1125bef519",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "privacy/gdpr-dsar",
+    "title": "DSAR export handling, verification and rights coverage undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "50,145,222"
+    },
+    "evidence": "AC-11.1 says 'Given a verified request' but does not say who verifies identity or how. The export's format, delivery channel, storage location and expiry are unspecified, and the export is itself personal data. '10 days' is a process SLA, not a system-testable behaviour. Only access and erasure are covered; rectification, restriction and objection (Arts. 16, 18, 21) are absent.",
+    "requirement_refs": ["REQ-18", "AC-11.1", "NFR-16"],
+    "rationale": "The export creates a new uncontrolled PII artefact. The AC cannot be tested by the system, and other rights are silently out of scope.",
+    "recommended_fix": "Specify export format, secure delivery and auto-expiry. Move identity verification to a documented process outside the system. Add a system-time AC (e.g. an export generated within N minutes). Record in-scope and out-of-scope rights with a PO decision.",
+    "verification": "PRD revision; rights scope listed in Section 10 or as ACs.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-014",
+    "fingerprint": "a06a52cf2c86753831acddddce174bdfef967d73",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "security/account-lifecycle",
+    "title": "Admin lockout recovery, reset-link expiry and role change undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "56,122,189,192"
+    },
+    "evidence": "AC-16.5: the setup command refuses once an admin exists, and nothing prevents disabling or locking the last admin (AC-8.3 lockout), so the platform can be left with no admin and no recovery path. The AC-16.2 reset link has no expiry. There is no AC for role change (admin to user) taking effect or for password change invalidating sessions. AC-8.3 lockout lets an attacker lock out known usernames. Concurrent runs of the setup command are not covered.",
+    "requirement_refs": ["REQ-24", "AC-8.3", "AC-16.2", "AC-16.5"],
+    "rationale": "Availability and security edge cases on the highest-privilege surface.",
+    "recommended_fix": "Add a last-admin guard, a documented break-glass recovery, a reset-link TTL (e.g. 24 h), role-change and password-change session rules, and a lockout policy that limits targeted lockout.",
+    "verification": "ACs for each case.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-015",
+    "fingerprint": "d4941dc82da2567b6e7f3ee10f60380ff77774ef",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "privacy/re-identification",
+    "title": "No minimum group size for aggregates",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "42,57,100"
+    },
+    "evidence": "REQ-25 and AC-5.4 promise 'aggregates only', but filters by country, browser/OS, event type and short date ranges can produce counts of 1 (singling out). No small-cell suppression threshold is stated.",
+    "requirement_refs": ["REQ-10", "REQ-25", "AC-5.4"],
+    "rationale": "Under GDPR Recital 26, aggregates that single out individuals are still personal data. Viewers are internal staff who may know the subjects.",
+    "recommended_fix": "Add a minimum cell size (e.g. k >= 5) with suppression, or record PO acceptance that it is not needed.",
+    "verification": "AC: a filter producing fewer than k unique users shows a suppressed value.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-016",
+    "fingerprint": "f0949f891859b34c3c722998377450733427536e",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/ambiguity",
+    "title": "Credential revocation evaluated at publish or consume time undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "46,200,201"
+    },
+    "evidence": "AC-17.3/17.4 do not say whether authorisation is checked when an event is published or when it is consumed. During a 15-minute consumer outage (AC-4.1) a backlog of events legitimately published before revocation, or within the rotation overlap, would be dead-lettered if checked at consume time. It would conflict with AC-4.1's 100% stored.",
+    "requirement_refs": ["AC-4.1", "AC-17.3", "AC-17.4", "REQ-14"],
+    "rationale": "The two ACs conflict at the boundary and could cause data loss during rotation.",
+    "recommended_fix": "Define authorisation against the credential state at publish time, and an AC for a backlog spanning revocation or rotation.",
+    "verification": "AC added and consistent with AC-4.1.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-017",
+    "fingerprint": "43632d3d1d83ace23de52ce0950ffdc163425138",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/validation",
+    "title": "Retention unit inconsistent and bounds undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "46,49,154,156"
+    },
+    "evidence": "REQ-14 and REQ-17 express retention in months; AC-12.1 uses 'N days (default 13 months)'. AC-12.3 rejects only missing or non-numeric values; zero, negative, fractional and unbounded large values are unaddressed. No maximum retention is set, although REQ-12 caps queries at 13 months.",
+    "requirement_refs": ["REQ-14", "REQ-17", "AC-12.1", "AC-12.3"],
+    "rationale": "Without a maximum, storage limitation (Art. 5(1)(e)) is not enforced. Retention 0 or a negative value could trigger mass deletion.",
+    "recommended_fix": "Fix one unit, set a minimum and maximum (e.g. 1 day to 13 months), and add boundary ACs. Consider confirmation for shortening, which destroys data.",
+    "verification": "Boundary ACs present.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-018",
+    "fingerprint": "a6c958fc47104f0de3693021ce62f1c34c104b6c",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "requirements/missing-nfr",
+    "title": "No fairness or oversize-event requirement",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "34,214,253"
+    },
+    "evidence": "R-3 (noisy producer degrades others) is deferred to Phase 4 with no measurable requirement. NFR-8 allows events up to 64 KB, but no AC says what happens to larger events or malformed or poison messages (for example, ones that crash the consumer).",
+    "requirement_refs": ["REQ-2", "NFR-8", "R-3", "REQ-6"],
+    "rationale": "Without a target, Phase 4 cannot be checked against tenant fairness, and poison messages can stall ingestion.",
+    "recommended_fix": "Add an NFR (e.g. one tenant at 4x share does not raise other tenants' p95 freshness above NFR-3) and ACs for oversize and poison events (dead-lettered, consumer keeps running).",
+    "verification": "NFR and ACs added.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-019",
+    "fingerprint": "f363e6166d3f6a91a3cdb7270b6a50ce20c6dcdf",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Low",
+    "category": "requirements/traceability",
+    "title": "Requirements and NFRs without acceptance criteria",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "213,218,225,267,356,358"
+    },
+    "evidence": "REQ-22 traces only to NFR-6 and A-2, with no AC. NFR-7, NFR-12 and NFR-19 have no AC. The traceability row for REQ-20 lists US-9, US-11 and US-14 but omits the audit ACs in US-8, US-10, US-12, US-16 and US-17. Section 10 puts 'Alerting' out of scope while NFR-19 needs 'alert-ready metrics', so it is unclear whether operational alerting is excluded.",
+    "requirement_refs": ["REQ-20", "REQ-22", "NFR-7", "NFR-12", "NFR-19"],
+    "rationale": "Gaps weaken the traceability check at later gates. The alerting ambiguity risks no operational alerts.",
+    "recommended_fix": "Add verifying ACs or test notes, complete the REQ-20 row, and clarify that 'Alerting' in Section 10 means dashboard alerting only.",
+    "verification": "Traceability table complete.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-020",
+    "fingerprint": "7471b373e5153414ac5e8334f9285e877e542f2d",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Low",
+    "category": "requirements/testability",
+    "title": "AC-1.2 status codes overconstrained",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "66"
+    },
+    "evidence": "AC-1.2 requires an HTTP POST of an event to 'any exposed service' to return 404 or 405. The query and admin APIs are HTTP and will correctly return 401 or 400 for unauthenticated or invalid POSTs.",
+    "requirement_refs": ["REQ-1", "AC-1.2"],
+    "rationale": "A correct system fails the AC as written.",
+    "recommended_fix": "Change to 'returns a 4xx and stores nothing; no route accepts event payloads'.",
+    "verification": "AC reworded.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-021",
+    "fingerprint": "b60e940e0d98b3db824d6f9c105d9613e2ff7c8c",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Medium",
+    "category": "privacy/staff-data",
+    "title": "Staff personal data treatment undefined",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "173,234"
+    },
+    "evidence": "A-4: staff account data's 'privacy treatment is not defined here'. Audit records keep the staff actor and sign-in activity for 12 months (AC-14.2). There is no owner, no due phase and no retention for disabled accounts.",
+    "requirement_refs": ["A-4", "REQ-20", "AC-14.2"],
+    "rationale": "Staff are GDPR data subjects too. An assumption with no owner or due date is a silently deferred obligation.",
+    "recommended_fix": "Turn A-4 into a tracked item with an owner, or add retention and minimisation rules for account and audit actor data.",
+    "verification": "Item recorded with owner and phase.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-022",
+    "fingerprint": "96c28d780f0d719f275e0ceacab4cafa49a3af11",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Low",
+    "category": "requirements/testability",
+    "title": "Mutation threshold and independent onboarding trial not measurable",
+    "location": {
+      "file": "docs/requirements/event-analytics.md",
+      "lines": "74,227"
+    },
+    "evidence": "NFR-21 requires mutation testing with no score threshold. AC-2.2 needs 'a developer who has not worked on the platform', but the role register shows a single-human team with no such person named.",
+    "requirement_refs": ["NFR-21", "AC-2.2", "NFR-20"],
+    "rationale": "Neither can pass or fail objectively.",
+    "recommended_fix": "Set a mutation score (e.g. at least 70% on changed modules). Name who runs the trial, or define a substitute (e.g. a fresh-context agent following only the docs).",
+    "verification": "Values or roles stated.",
+    "blocking": false,
+    "status": "open"
+  },
+  {
+    "id": "CR-event-analytics-023",
+    "fingerprint": "71409ff00a089d5c33d502a7fc15aa0b4ccd7410",
+    "reviewer": "critical-reviewer",
+    "reviewed_sha": "59d8755",
+    "severity": "Low",
+    "category": "governance/evidence",
+    "title": "HG-0 gate flipped to approved in PRD commit without in-repo evidence",
+    "location": {
+      "file": ".sdlc/state/event-analytics.json",
+      "lines": "14-16"
+    },
+    "evidence": "Commit 59d8755 changes HG-0 from status 'unverified' (record: 'merged ... with no approving review; main unprotected') to 'approved', citing only 'PR #1 comment 2026-10-21T17:27:30Z'. The same commit adds an audit note that d808267 was pushed directly to main under the agent identity.",
+    "requirement_refs": ["HG-0", "role-register D-2", "role-register D-4"],
+    "rationale": "An agent-authored state change records a human gate decision. A comment is weaker evidence than a PR review. I did not verify it (gh was not used).",
+    "recommended_fix": "The Engineering Lead confirms the HG-0 decision and the d808267 authorship, and records role-register deviation D-5 through HG-C. Keep gate state edits out of PRD commits.",
+    "verification": "A human confirmation is linked in gates.json; the role register is updated.",
+    "blocking": false,
+    "status": "open"
+  }
+]
