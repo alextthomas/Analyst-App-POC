@@ -3,17 +3,18 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P2",
-  "status": "awaiting:HG-1",
+  "status": "rework:P2 (5 High PRD findings)",
   "branch": "docs/hg-1-prd-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
     "charter": { "path": "docs/project-charter.md", "sha": "9952984" },
     "handbook": { "path": "CLAUDE.md", "sha": "9952984" },
-    "prd": { "path": "docs/requirements/event-analytics.md", "revision": 5 }
+    "prd": { "path": "docs/requirements/event-analytics.md", "revision": 5, "sha": "59d8755" }
   },
   "gates": {
     "HG-0": { "status": "approved", "sha": "9952984", "decided_by": "alextthomas", "record": "PR #1 comment 2026-10-21T17:27:30Z (merged as 30d8b43)" },
-    "HG-1": { "status": "pending" },
+    "HG-1": { "status": "awaiting", "sha": "59d8755", "record": "PR #3" },
+    "HG-C-1": { "status": "awaiting", "scope": "charter PII amendment (HG-0 artifact)", "record": "PR #4" },
     "HG-2": { "status": "pending" },
     "HG-3": { "status": "pending" },
     "HG-4": { "status": "pending", "note": "Mandatory for Tier 3" },
@@ -21,8 +22,9 @@
     "HG-6": { "status": "pending" }
   },
   "review_rounds": 0,
-  "open_blocking_findings": 0,
-  "head_sha": "d808267",
+  "prd_review_rounds": 1,
+  "open_blocking_findings": 5,
+  "head_sha": "59d8755",
   "audit_notes": ["d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)"],
   "updated_at": "2026-10-21T17:45:00Z"
 }

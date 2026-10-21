@@ -1,0 +1,360 @@
+{
+  "feature": "event-analytics",
+  "scope": "PRD (Phase 2, optional critical review)",
+  "rounds": [
+    {
+      "round": 1,
+      "sha": "59d8755",
+      "reviewers": [
+        "critical-reviewer"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "cfb4eb1e482b058bb3a2ba6f4e620883a88273b2",
+      "ids": [
+        "CR-event-analytics-001"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "High",
+      "blocking": true,
+      "title": "Erasure scope excludes backups, dead-letter, messaging layer and restore",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "9a04575274c4d1b0fadf50e3b159e4e4ccee0eeb",
+      "ids": [
+        "CR-event-analytics-002"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "High",
+      "blocking": true,
+      "title": "Messaging layer persists raw PII without limit, contradicting REQ-16",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "e04d0d9041e734e744140682a7aae8a93686d9be",
+      "ids": [
+        "CR-event-analytics-003"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "High",
+      "blocking": true,
+      "title": "Unauthorised and revoked publishers are accepted into the dead-letter store",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "d60b72c327eddc05da066432ac4335fe0bbc2bec",
+      "ids": [
+        "CR-event-analytics-004"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "High",
+      "blocking": true,
+      "title": "Lawful basis, ePrivacy, DPIA and transparency not stated",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "166e95fe43ebaf713f0049c4c3ea84983c185ed1",
+      "ids": [
+        "CR-event-analytics-005"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "High",
+      "blocking": true,
+      "title": "Admin role protected by password only",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "b542b05c177d6c69813950d27ced14214bc9f3d2",
+      "ids": [
+        "CR-event-analytics-006"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "No-loss durability contradicts RPO 5 min",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "444231dbf210d44fd15ce5312134ffa5863ac7f8",
+      "ids": [
+        "CR-event-analytics-007"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Deduplication scope and window undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "ed85c85b8dea62114eb58bbd4f126cca0f9d24aa",
+      "ids": [
+        "CR-event-analytics-008"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Event time, time zone and late-arrival semantics undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "0cfbeb71cc4f606f934a4a4a6e421c8c006c40c9",
+      "ids": [
+        "CR-event-analytics-009"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Unmeasurable or disjunctive acceptance criteria",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "3b36fe19e07c538c9f59703f0fb180e98a1d683c",
+      "ids": [
+        "CR-event-analytics-010"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Hashed device id has no purpose and is outside DSAR",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "f46c063ee07af98e51f31f6054228ecac46eaf5c",
+      "ids": [
+        "CR-event-analytics-011"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "PII in allow-listed values and raw user agent not addressed",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "9dd236c3a684cc79936da7c8c0a0c05c45cda199",
+      "ids": [
+        "CR-event-analytics-012"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Dead-letter inspection exposes raw PII and audit list is incomplete",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "c049bb56338e40a6b07c020a0ed85e1125bef519",
+      "ids": [
+        "CR-event-analytics-013"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "DSAR export handling, verification and rights coverage undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "a06a52cf2c86753831acddddce174bdfef967d73",
+      "ids": [
+        "CR-event-analytics-014"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Admin lockout recovery, reset-link expiry and role change undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "d4941dc82da2567b6e7f3ee10f60380ff77774ef",
+      "ids": [
+        "CR-event-analytics-015"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "No minimum group size for aggregates",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "f0949f891859b34c3c722998377450733427536e",
+      "ids": [
+        "CR-event-analytics-016"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Credential revocation evaluated at publish or consume time undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "43632d3d1d83ace23de52ce0950ffdc163425138",
+      "ids": [
+        "CR-event-analytics-017"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Retention unit inconsistent and bounds undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "a6c958fc47104f0de3693021ce62f1c34c104b6c",
+      "ids": [
+        "CR-event-analytics-018"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "No fairness or oversize-event requirement",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "f363e6166d3f6a91a3cdb7270b6a50ce20c6dcdf",
+      "ids": [
+        "CR-event-analytics-019"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "Requirements and NFRs without acceptance criteria",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "7471b373e5153414ac5e8334f9285e877e542f2d",
+      "ids": [
+        "CR-event-analytics-020"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "AC-1.2 status codes overconstrained",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "b60e940e0d98b3db824d6f9c105d9613e2ff7c8c",
+      "ids": [
+        "CR-event-analytics-021"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Medium",
+      "blocking": false,
+      "title": "Staff personal data treatment undefined",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "96c28d780f0d719f275e0ceacab4cafa49a3af11",
+      "ids": [
+        "CR-event-analytics-022"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "Mutation threshold and independent onboarding trial not measurable",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    },
+    {
+      "fingerprint": "71409ff00a089d5c33d502a7fc15aa0b4ccd7410",
+      "ids": [
+        "CR-event-analytics-023"
+      ],
+      "reported_by": [
+        "critical-reviewer"
+      ],
+      "severity": "Low",
+      "blocking": false,
+      "title": "HG-0 gate flipped to approved in PRD commit without in-repo evidence",
+      "first_seen_sha": "59d8755",
+      "status": "open",
+      "source": "reports/review/event-analytics-critical-59d8755.json"
+    }
+  ]
+}
