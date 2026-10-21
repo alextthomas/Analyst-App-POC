@@ -1,6 +1,6 @@
 # Project Charter: Event Analytics Platform (Analyst-App-POC)
 
-Status: Submitted for HG-0 | Owner: @alextthomas (Engineering Lead, Product Owner) | Author: @alextthomasagent | Date: 2026-10-21
+Status: Approved at HG-0 (PR #1); amendment 1 submitted under HG-C (PII handling) | Owner: @alextthomas (Engineering Lead, Product Owner) | Author: @alextthomasagent | Date: 2026-10-21
 
 ## 1. Business goal
 
@@ -59,15 +59,22 @@ Out of scope (v1) unless added through HG-C:
 
 ## 6. Compliance and data classification
 
-- Events **will include personal data** (for example user identifiers, IP
-  addresses, device identifiers). The work is therefore classified
-  **Risk Tier 3** (PII / regulated data) pending confirmation at HG-4: HG-4 is
-  mandatory, Security Lead approval is required at HG-3 and HG-5, and mutation
-  testing applies to changed modules.
-- The PRD must state the applicable privacy obligations (retention, consent,
-  deletion / subject-access requests, minimisation, pseudonymisation) as NFRs
-  or open questions. Which regulations apply (for example GDPR, CCPA) is an
-  open question for the Product Owner.
+- Producer events **may carry personal data** (for example user identifiers,
+  IP addresses, device identifiers). Raw PII is **stripped at the point of
+  intake** and not persisted beyond the bounds below; only a per-tenant pseudonymous user id and
+  coarse derived values (country, browser/OS family) are stored. Raw PII is
+  held briefly in the client buffer, the messaging layer (at-rest storage: at
+  most 24 h after intake acknowledgement, or 7 days if never acknowledged) and
+  dead-letter messages (up to 7 days), and pseudonymous ids remain personal
+  data under GDPR.
+- Proposed lawful basis is legitimate interests, pending DPO/legal sign-off;
+  a DPIA is required before HG-4.
+  The work therefore stays **Risk Tier 3** (PII / regulated data) pending
+  confirmation at HG-4: HG-4 is mandatory, Security Lead approval is required
+  at HG-3 and HG-5, and mutation testing applies to changed modules.
+- Applicable regulation: **GDPR** (Product Owner, 2026-10-21). Retention,
+  erasure, subject-access, minimisation and pseudonymisation obligations are
+  stated as NFRs in `docs/requirements/event-analytics.md`.
 
 ## 7. Target environments
 
