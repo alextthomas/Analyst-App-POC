@@ -30,6 +30,7 @@ change branch protection or environments.
 | D-2 | HG-5 needs Engineering Lead + QA Lead (+ Security Lead for Tier 3) | One approval from @alextthomas covers all roles | The PR approval comment must state each role being exercised; evidence pack lists all role checklists              |
 | D-3 | Separation between authoring and approving roles                   | All human roles held by one person              | Humans never author gated artifacts; agents author as @alextthomasagent; GitHub blocks self-approval               |
 | D-4 | Organisation audit log (Section 8.4)                               | Personal account, no org audit log              | PR reviews and environment approvals are the record; orchestrator mirrors to `reports/<date>-<version>/gates.json` |
+| D-5 | Agents never author CODEOWNERS or governance files (Section 7.4, Phase 1) | Commit d808267 (CODEOWNERS, this register, `.claude/`, the guide) was authored by @alextthomas under the repo-local `alextthomasagent` git identity and pushed to `main` before branch protection existed | Authorship confirmed by @alextthomas on 2026-10-21 in the orchestrator session; HG-0 approval comment on PR #1; protection ruleset 25569090 now blocks direct pushes; human commits use their own identity or a separate clone |
 
 ## 3. Platform controls (configured by @alextthomas, not by agents)
 
@@ -47,5 +48,5 @@ Branch protection for `main` (Settings → Branches → Add rule, or Rulesets):
 Environment `production` (created in Phase 9): required reviewer @alextthomas,
 "Prevent self-review" on, deployment branches limited to `main`.
 
-CODEOWNERS: `.github/CODEOWNERS` (committed by @alextthomas in 7c81c04); agents are denied
+CODEOWNERS: `.github/CODEOWNERS` (committed by @alextthomas in d808267, see D-5); agents are denied
 write access to that path.
