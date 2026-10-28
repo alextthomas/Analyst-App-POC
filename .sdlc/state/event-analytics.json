@@ -2,14 +2,15 @@
   "feature": "event-analytics",
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
-  "phase": "P2",
-  "status": "awaiting:HG-1",
-  "branch": "docs/hg-1-prd-event-analytics",
+  "phase": "P3",
+  "status": "in-progress:P3",
+  "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
     "charter": {
       "path": "docs/project-charter.md",
-      "sha": "9952984"
+      "sha": "7465f52",
+      "amendment": 1
     },
     "handbook": {
       "path": "CLAUDE.md",
@@ -29,15 +30,17 @@
       "record": "PR #1 comment 2026-10-21T17:27:30Z (merged as 30d8b43)"
     },
     "HG-1": {
-      "status": "awaiting",
+      "status": "approved",
       "sha": "cf5c048",
-      "record": "PR #3",
-      "review": "critical review round 4 (final) PASS WITH NON-BLOCKING FINDINGS"
+      "decided_by": "alextthomas",
+      "record": "PR #3 review APPROVED on bd23b69 2026-10-21T19:39:01Z, merged a9f775c",
+      "note": "Review body did not record owner/due phase for CR-029, CR-036, CR-048"
     },
     "HG-C-1": {
-      "status": "awaiting",
-      "scope": "charter PII amendment (HG-0 artifact)",
-      "record": "PR #4"
+      "status": "approved",
+      "sha": "7465f52",
+      "decided_by": "alextthomas",
+      "record": "PR #4 review APPROVED 2026-10-21T19:39:42Z, merged c64e86a"
     },
     "HG-2": {
       "status": "pending"
@@ -59,11 +62,12 @@
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "cf5c048",
+  "head_sha": "c64e86a",
   "audit_notes": [
-    "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)"
+    "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
+    "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification"
   ],
-  "updated_at": "2026-10-21T19:37:06.131Z",
+  "updated_at": "2026-10-28T12:03:01.938Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
