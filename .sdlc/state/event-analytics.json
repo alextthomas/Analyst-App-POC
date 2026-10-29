@@ -3,7 +3,7 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P3",
-  "status": "blocked:P3 (awaiting PR #5 analyst Edit tool)",
+  "status": "blocked:P3 (new Claude Code session needed so requirements-analyst loads Edit from PR #5)",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -69,20 +69,21 @@
       "status": "pending"
     },
     "HG-C-2": {
-      "status": "drafting",
-      "scope": "PRD rev 12: PI-4, PI-7, PI-9, PI-16, PI-19 from UX decisions",
-      "branch": "docs/hg-c-prd-ux-alignment"
+      "status": "pending",
+      "scope": "PRD rev 12: PI-4, PI-7, PI-9, PI-16, PI-19 per docs/ux/event-analytics.md sections 7-8",
+      "branch": "to create from main: docs/hg-c-prd-ux-alignment"
     }
   },
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "c749551",
+  "head_sha": "940e8d9",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
-    "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification"
+    "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
+    "PR #5 approved and merged 940e8d9 (requirements-analyst Edit tool); agent definitions load at session start, so it takes effect in a new session"
   ],
-  "updated_at": "2026-10-29T20:24:34.765Z",
+  "updated_at": "2026-10-29T20:32:31.355Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
@@ -90,9 +91,9 @@
     "CR-event-analytics-048"
   ],
   "pending": [
-    "PR #5 (requirements-analyst Edit tool)",
-    "UX spec rev 3: 10 prototype spec gaps",
-    "PRD rev 12 HG-C amendment",
-    "owner/due for CR-029, CR-036, CR-048"
+    "New session: requirements-analyst applies PRD rev 12 (HG-C-2) with Edit",
+    "New session: requirements-analyst UX spec rev 3 (10 prototype gaps, developer report)",
+    "Open PRs: [HG-2] UX and [HG-C] PRD rev 12",
+    "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
   ]
 }
