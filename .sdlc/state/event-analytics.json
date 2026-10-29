@@ -2,8 +2,8 @@
   "feature": "event-analytics",
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
-  "phase": "P3",
-  "status": "awaiting:HG-C-3",
+  "phase": "P4",
+  "status": "in-progress:P4 + HG-C-4",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -18,13 +18,13 @@
     },
     "prd": {
       "path": "docs/requirements/event-analytics.md",
-      "revision": 12,
-      "sha": "f72a082"
+      "revision": 13,
+      "sha": "989d367"
     },
     "ux": {
       "path": "docs/ux/event-analytics.md",
-      "revision": 3,
-      "sha": "631c6f1"
+      "revision": 4,
+      "sha": "989d367"
     },
     "prototype": {
       "path": "prototypes/event-analytics/",
@@ -84,30 +84,25 @@
       "scope": "PRD rev 12"
     },
     "HG-C-3": {
+      "status": "approved",
+      "sha": "840b72c",
+      "decided_by": "alextthomas",
+      "record": "PR #8 review APPROVED 2026-10-29, body \"accept all defaults\" (Q-52..Q-55 defaults; §11.4 conflicts not overridden); merged 989d367",
+      "scope": "PRD rev 13 + UX rev 4"
+    },
+    "HG-C-4": {
       "status": "awaiting",
-      "branch": "docs/hg-c-3-answers-alignment",
-      "scope": "PRD rev 13 (Q-50/51 answers, add-type PIs, PI-21..24) + UX rev 4 (UX-D-31..63 applied)",
+      "branch": "docs/hg-c-4-q52-55",
+      "scope": "PRD rev 14 + UX rev 5 applying Q-52..Q-55",
       "open_questions": [
-        "Q-52",
-        "Q-53",
-        "Q-54",
-        "Q-55"
-      ],
-      "conflicts_not_applied": [
-        "UX-Q-31(a) admins see all tenants (REQ-9/13, NFR-9)",
-        "UX-Q-47 re-run without re-entering user ids (REQ-23, AC-11.3)"
-      ],
-      "residual": [
-        "RO-2, RO-3 to Phase 4"
-      ],
-      "sha": "c1b4eef",
-      "record": "PR #8"
+        "Q-56 (retention of non-access request-list entries; proposed 7 days from request)"
+      ]
     }
   },
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "c1b4eef",
+  "head_sha": "989d367",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
     "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
@@ -115,9 +110,10 @@
     "2026-10-29 session resume: gates re-validated on GitHub (PR #1 comment, PR #2-#5 approving reviews present). requirements-analyst now has Edit; block cleared.",
     "Prototype gap list (10 items) from prior session was not persisted; developer re-deriving to reports/ux/event-analytics-prototype-gaps.md",
     "HG-2 approved on PR #7 although the PR body stated it was not ready: human click-through of the prototype not run, independent UX review not run, prototype defects D-1..D-8 unfixed, 33 questions answered by blanket \"accept defaults\". Recorded as approver decision; evidence gap carried forward.",
-    "2026-10-29 Engineering/Product Owner (alextthomas, in chat) chose to drop the HG-2 evidence gap: no prototype refresh, D-1..D-8 not fixed, no click-through. Prototype stays at c749551 (UX rev 2) as a historical artifact."
+    "2026-10-29 Engineering/Product Owner (alextthomas, in chat) chose to drop the HG-2 evidence gap: no prototype refresh, D-1..D-8 not fixed, no click-through. Prototype stays at c749551 (UX rev 2) as a historical artifact.",
+    "P4 started in parallel with HG-C-4: architect given Q-52..Q-55 answers (approved at PR #8) directly; design must be re-checked against PRD rev 14 once HG-C-4 merges."
   ],
-  "updated_at": "2026-10-29T21:10:14.704Z",
+  "updated_at": "2026-10-29T21:34:52.893Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
@@ -125,8 +121,15 @@
     "CR-event-analytics-048"
   ],
   "pending": [
-    "HG-C-3 PR: PO review incl. Q-52..Q-55 and the two §11.4 conflicts",
-    "After HG-C-3: P4 solution-architect (ADR, OpenAPI, data model); carry UX-Q-3/5/20, RO-2, RO-3",
+    "HG-C-4 PR: PO review incl. Q-56",
+    "solution-architect: ADRs, openapi.yaml, event contract, data model — running",
+    "Then: Spectral lint; architect-reviewer + critical-reviewer in parallel on design SHA",
     "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
-  ]
+  ],
+  "design": {
+    "branch": "design/event-analytics",
+    "worktree": ".worktrees/design",
+    "base": "989d367",
+    "status": "solution-architect running"
+  }
 }
