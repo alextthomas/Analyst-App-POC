@@ -3,7 +3,7 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P3",
-  "status": "in-progress:P3",
+  "status": "awaiting:HG-2, HG-C-2",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -23,13 +23,17 @@
     },
     "ux": {
       "path": "docs/ux/event-analytics.md",
-      "revision": 2,
+      "revision": 3,
       "sha": "c010a29"
     },
     "prototype": {
       "path": "prototypes/event-analytics/",
       "sha": "c749551",
       "build": "npm run build passed (developer agent report); not clicked through"
+    },
+    "gap_report": {
+      "path": "reports/ux/event-analytics-prototype-gaps.md",
+      "sha": "dfd1880"
     }
   },
   "gates": {
@@ -53,7 +57,15 @@
       "record": "PR #4 review APPROVED 2026-10-21T19:39:42Z, merged c64e86a"
     },
     "HG-2": {
-      "status": "pending"
+      "status": "awaiting",
+      "open_questions": "UX-Q-31..UX-Q-63 (33); UX-Q-3/5/20 deferred to Phase 4",
+      "new_pi": [
+        "PI-21",
+        "PI-22",
+        "PI-23",
+        "PI-24"
+      ],
+      "depends_on": "HG-C-2 (PR #6) Q-50, Q-51"
     },
     "HG-3": {
       "status": "pending"
@@ -91,7 +103,7 @@
     "2026-10-29 session resume: gates re-validated on GitHub (PR #1 comment, PR #2-#5 approving reviews present). requirements-analyst now has Edit; block cleared.",
     "Prototype gap list (10 items) from prior session was not persisted; developer re-deriving to reports/ux/event-analytics-prototype-gaps.md"
   ],
-  "updated_at": "2026-10-29T20:40:11.995Z",
+  "updated_at": "2026-10-29T20:50:44.322Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
@@ -99,10 +111,9 @@
     "CR-event-analytics-048"
   ],
   "pending": [
-    "PR #6 [HG-C] PRD rev 12 at 84d201c — awaiting PO review (Q-50, Q-51)",
-    "developer: prototype gap report — running",
-    "Then: requirements-analyst UX spec rev 3 from gap report",
-    "Open PRs: [HG-2] UX and [HG-C] PRD rev 12",
+    "PR #6 [HG-C] PRD rev 12 — PO review incl. Q-50, Q-51",
+    "HG-2 PR — PO/UX Lead answers UX-Q-31..63, then UX rev 4 + prototype refresh (fix D-1..D-8)",
+    "PI-21..24 may require a further HG-C after UX answers",
     "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
   ]
 }
