@@ -99,13 +99,15 @@
       ],
       "residual": [
         "RO-2, RO-3 to Phase 4"
-      ]
+      ],
+      "sha": "c1b4eef",
+      "record": "PR #8"
     }
   },
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "631c6f1",
+  "head_sha": "c1b4eef",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
     "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
@@ -115,7 +117,7 @@
     "HG-2 approved on PR #7 although the PR body stated it was not ready: human click-through of the prototype not run, independent UX review not run, prototype defects D-1..D-8 unfixed, 33 questions answered by blanket \"accept defaults\". Recorded as approver decision; evidence gap carried forward.",
     "2026-10-29 Engineering/Product Owner (alextthomas, in chat) chose to drop the HG-2 evidence gap: no prototype refresh, D-1..D-8 not fixed, no click-through. Prototype stays at c749551 (UX rev 2) as a historical artifact."
   ],
-  "updated_at": "2026-10-29T21:09:50.059Z",
+  "updated_at": "2026-10-29T21:10:14.704Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
