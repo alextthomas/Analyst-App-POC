@@ -2,14 +2,15 @@
   "feature": "event-analytics",
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
-  "phase": "P2",
-  "status": "awaiting:HG-1",
-  "branch": "docs/hg-1-prd-event-analytics",
+  "phase": "P3",
+  "status": "awaiting:HG-2, HG-C-2",
+  "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
     "charter": {
       "path": "docs/project-charter.md",
-      "sha": "9952984"
+      "sha": "7465f52",
+      "amendment": 1
     },
     "handbook": {
       "path": "CLAUDE.md",
@@ -19,6 +20,20 @@
       "path": "docs/requirements/event-analytics.md",
       "revision": 11,
       "sha": "cf5c048"
+    },
+    "ux": {
+      "path": "docs/ux/event-analytics.md",
+      "revision": 3,
+      "sha": "c010a29"
+    },
+    "prototype": {
+      "path": "prototypes/event-analytics/",
+      "sha": "c749551",
+      "build": "npm run build passed (developer agent report); not clicked through"
+    },
+    "gap_report": {
+      "path": "reports/ux/event-analytics-prototype-gaps.md",
+      "sha": "dfd1880"
     }
   },
   "gates": {
@@ -29,18 +44,30 @@
       "record": "PR #1 comment 2026-10-21T17:27:30Z (merged as 30d8b43)"
     },
     "HG-1": {
-      "status": "awaiting",
+      "status": "approved",
       "sha": "cf5c048",
-      "record": "PR #3",
-      "review": "critical review round 4 (final) PASS WITH NON-BLOCKING FINDINGS"
+      "decided_by": "alextthomas",
+      "record": "PR #3 review APPROVED on bd23b69 2026-10-21T19:39:01Z, merged a9f775c",
+      "note": "Review body did not record owner/due phase for CR-029, CR-036, CR-048"
     },
     "HG-C-1": {
-      "status": "awaiting",
-      "scope": "charter PII amendment (HG-0 artifact)",
-      "record": "PR #4"
+      "status": "approved",
+      "sha": "7465f52",
+      "decided_by": "alextthomas",
+      "record": "PR #4 review APPROVED 2026-10-21T19:39:42Z, merged c64e86a"
     },
     "HG-2": {
-      "status": "pending"
+      "status": "awaiting",
+      "open_questions": "UX-Q-31..UX-Q-63 (33); UX-Q-3/5/20 deferred to Phase 4",
+      "new_pi": [
+        "PI-21",
+        "PI-22",
+        "PI-23",
+        "PI-24"
+      ],
+      "depends_on": "HG-C-2 (PR #6) Q-50, Q-51",
+      "record": "PR #7",
+      "sha": "e70010f"
     },
     "HG-3": {
       "status": "pending"
@@ -54,20 +81,41 @@
     },
     "HG-6": {
       "status": "pending"
+    },
+    "HG-C-2": {
+      "status": "awaiting",
+      "scope": "PRD rev 12: PI-4, PI-7, PI-9, PI-16, PI-19 per docs/ux/event-analytics.md sections 7-8",
+      "branch": "docs/hg-c-prd-ux-alignment (worktree .worktrees/hg-c from main 940e8d9)",
+      "sha": "84d201c",
+      "record": "PR #6",
+      "open_questions": [
+        "Q-50",
+        "Q-51"
+      ]
     }
   },
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "cf5c048",
+  "head_sha": "e70010f",
   "audit_notes": [
-    "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)"
+    "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
+    "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
+    "PR #5 approved and merged 940e8d9 (requirements-analyst Edit tool); agent definitions load at session start, so it takes effect in a new session",
+    "2026-10-29 session resume: gates re-validated on GitHub (PR #1 comment, PR #2-#5 approving reviews present). requirements-analyst now has Edit; block cleared.",
+    "Prototype gap list (10 items) from prior session was not persisted; developer re-deriving to reports/ux/event-analytics-prototype-gaps.md"
   ],
-  "updated_at": "2026-10-21T19:37:06.131Z",
+  "updated_at": "2026-10-29T20:51:08.705Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
     "CR-event-analytics-036",
     "CR-event-analytics-048"
+  ],
+  "pending": [
+    "PR #6 [HG-C] PRD rev 12 — PO review incl. Q-50, Q-51",
+    "HG-2 PR — PO/UX Lead answers UX-Q-31..63, then UX rev 4 + prototype refresh (fix D-1..D-8)",
+    "PI-21..24 may require a further HG-C after UX answers",
+    "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
   ]
 }
