@@ -96,7 +96,9 @@
       "scope": "PRD rev 14 + UX rev 5 applying Q-52..Q-55",
       "open_questions": [
         "Q-56 (retention of non-access request-list entries; proposed 7 days from request)"
-      ]
+      ],
+      "sha": "117d252",
+      "record": "PR #9"
     }
   },
   "review_rounds": 0,
@@ -113,7 +115,7 @@
     "2026-10-29 Engineering/Product Owner (alextthomas, in chat) chose to drop the HG-2 evidence gap: no prototype refresh, D-1..D-8 not fixed, no click-through. Prototype stays at c749551 (UX rev 2) as a historical artifact.",
     "P4 started in parallel with HG-C-4: architect given Q-52..Q-55 answers (approved at PR #8) directly; design must be re-checked against PRD rev 14 once HG-C-4 merges."
   ],
-  "updated_at": "2026-10-29T21:34:52.893Z",
+  "updated_at": "2026-10-29T21:35:16.933Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
