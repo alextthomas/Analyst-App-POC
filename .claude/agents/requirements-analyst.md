@@ -1,7 +1,7 @@
 ---
 name: requirements-analyst
 description: Use for turning a business goal into a PRD with numbered requirements, acceptance criteria, NFRs, and (when UI is in scope) user journeys and screen specs.
-tools: Read, Write, Grep, Glob
+tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 skills: ux-spec, traceability
 ---
