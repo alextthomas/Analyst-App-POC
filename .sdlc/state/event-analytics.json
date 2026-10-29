@@ -3,7 +3,7 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P3",
-  "status": "blocked:P3 (new Claude Code session needed so requirements-analyst loads Edit from PR #5)",
+  "status": "in-progress:P3",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -69,9 +69,15 @@
       "status": "pending"
     },
     "HG-C-2": {
-      "status": "pending",
+      "status": "awaiting",
       "scope": "PRD rev 12: PI-4, PI-7, PI-9, PI-16, PI-19 per docs/ux/event-analytics.md sections 7-8",
-      "branch": "to create from main: docs/hg-c-prd-ux-alignment"
+      "branch": "docs/hg-c-prd-ux-alignment (worktree .worktrees/hg-c from main 940e8d9)",
+      "sha": "84d201c",
+      "record": "PR #6",
+      "open_questions": [
+        "Q-50",
+        "Q-51"
+      ]
     }
   },
   "review_rounds": 0,
@@ -81,9 +87,11 @@
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
     "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
-    "PR #5 approved and merged 940e8d9 (requirements-analyst Edit tool); agent definitions load at session start, so it takes effect in a new session"
+    "PR #5 approved and merged 940e8d9 (requirements-analyst Edit tool); agent definitions load at session start, so it takes effect in a new session",
+    "2026-10-29 session resume: gates re-validated on GitHub (PR #1 comment, PR #2-#5 approving reviews present). requirements-analyst now has Edit; block cleared.",
+    "Prototype gap list (10 items) from prior session was not persisted; developer re-deriving to reports/ux/event-analytics-prototype-gaps.md"
   ],
-  "updated_at": "2026-10-29T20:32:31.355Z",
+  "updated_at": "2026-10-29T20:40:11.995Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
@@ -91,8 +99,9 @@
     "CR-event-analytics-048"
   ],
   "pending": [
-    "New session: requirements-analyst applies PRD rev 12 (HG-C-2) with Edit",
-    "New session: requirements-analyst UX spec rev 3 (10 prototype gaps, developer report)",
+    "PR #6 [HG-C] PRD rev 12 at 84d201c — awaiting PO review (Q-50, Q-51)",
+    "developer: prototype gap report — running",
+    "Then: requirements-analyst UX spec rev 3 from gap report",
     "Open PRs: [HG-2] UX and [HG-C] PRD rev 12",
     "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
   ]
