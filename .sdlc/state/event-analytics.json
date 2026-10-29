@@ -3,7 +3,7 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P3",
-  "status": "in-progress:P3",
+  "status": "blocked:P3 (awaiting PR #5 analyst Edit tool)",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -20,6 +20,16 @@
       "path": "docs/requirements/event-analytics.md",
       "revision": 11,
       "sha": "cf5c048"
+    },
+    "ux": {
+      "path": "docs/ux/event-analytics.md",
+      "revision": 2,
+      "sha": "c010a29"
+    },
+    "prototype": {
+      "path": "prototypes/event-analytics/",
+      "sha": "c749551",
+      "build": "npm run build passed (developer agent report); not clicked through"
     }
   },
   "gates": {
@@ -57,21 +67,32 @@
     },
     "HG-6": {
       "status": "pending"
+    },
+    "HG-C-2": {
+      "status": "drafting",
+      "scope": "PRD rev 12: PI-4, PI-7, PI-9, PI-16, PI-19 from UX decisions",
+      "branch": "docs/hg-c-prd-ux-alignment"
     }
   },
   "review_rounds": 0,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "c64e86a",
+  "head_sha": "c749551",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
     "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification"
   ],
-  "updated_at": "2026-10-28T12:03:01.938Z",
+  "updated_at": "2026-10-29T20:24:34.765Z",
   "open_nonblocking_findings": 12,
   "tracked_medium_findings_needing_owner": [
     "CR-event-analytics-029",
     "CR-event-analytics-036",
     "CR-event-analytics-048"
+  ],
+  "pending": [
+    "PR #5 (requirements-analyst Edit tool)",
+    "UX spec rev 3: 10 prototype spec gaps",
+    "PRD rev 12 HG-C amendment",
+    "owner/due for CR-029, CR-036, CR-048"
   ]
 }
