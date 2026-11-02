@@ -61,8 +61,10 @@ $results = [ordered]@{}
 
 try {
   if (-not $SkipBuild) {
-    $results['Typecheck'] = Invoke-Stage 'Typecheck (all workspaces)' 'npm run typecheck'
+    # Build first so @ea/contracts' dist exists; the other workspaces import it
+    # by its compiled types, so typecheck on a clean checkout needs it present.
     $results['Build']     = Invoke-Stage 'Build (all workspaces)' 'npm run build'
+    $results['Typecheck'] = Invoke-Stage 'Typecheck (all workspaces)' 'npm run typecheck'
   }
 
   # --- infrastructure detection (informational) ---------------------------

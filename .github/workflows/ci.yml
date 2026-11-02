@@ -73,11 +73,14 @@ jobs:
         run: npm run db:seed
         working-directory: apps/api
 
-      - name: Typecheck
-        run: npm run typecheck
-
+      # Build first: the api/web/producer-client workspaces import @ea/contracts
+      # via its compiled dist, so the shared packages must be built before any
+      # tsc typecheck can resolve '@ea/contracts' on a clean checkout.
       - name: Build
         run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
 
       - name: Start API + ingestion worker
         run: |
