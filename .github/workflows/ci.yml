@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+# Avoid redundant runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    name: Typecheck, build, test + coverage
+    runs-on: ubuntu-latest
+
+    # Postgres and NATS as service containers so the integration tests run for
+    # real in CI (they self-skip locally when infra is absent, but here it's up).
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ea
+          POSTGRES_PASSWORD: ea_local_pw
+          POSTGRES_DB: event_analytics
+        ports:
+          - 15432:5432
+        options: >-
+          --health-cmd "pg_isready -U ea -d event_analytics"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      nats:
+        image: nats:2.10-alpine
+        ports:
+          - 4222:4222
+          - 8222:8222
+        # JetStream + monitoring; health-checked via the monitoring endpoint.
+        options: >-
+          --health-cmd "wget -q -O - http://localhost:8222/healthz || exit 1"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # Matches docker-compose / .env.example (host port 15432).
+      DATABASE_URL: postgresql://ea:ea_local_pw@localhost:15432/event_analytics?schema=control
+      NATS_URL: nats://localhost:4222
+      API_PORT: '8080'
+      WEB_ORIGIN: http://localhost:5173
+      API_BASE: http://localhost:8080
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate
+
+      - name: Apply migrations
+        run: npm run db:deploy
+        working-directory: apps/api
+
+      - name: Seed demo data
+        run: npm run db:seed
+        working-directory: apps/api
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Start API + ingestion worker
+        run: |
+          npm run dev:api &
+          npm run ingest &
+          # Wait for the API readiness probe (up to 60s).
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/health/ready > /dev/null; then
+              echo "API ready"; break
+            fi
+            sleep 2
+          done
+
+      - name: Test with coverage
+        run: npm run test:cov
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            apps/api/coverage/**
+            apps/web/coverage/**
+          if-no-files-found: ignore

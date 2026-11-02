@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.env
+.env.local
+.DS_Store
+# Prisma generated client
+packages/*/generated/
+apps/*/generated/
+# Keep the throwaway prototype's own ignore rules intact
