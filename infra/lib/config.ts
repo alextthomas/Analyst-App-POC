@@ -69,10 +69,15 @@ export function readSandboxConfig(app: App): SandboxConfig {
   const expiresOn = ctxString(app, "expiresOn") ?? "2026-12-03";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(expiresOn))
     throw new Error("Context expiresOn must be YYYY-MM-DD");
+  // The repo uses GitHub's immutable OIDC subject, so the token's sub embeds the
+  // owner and repo ids: repo:<owner>@<id>/<repo>@<id>:environment:<env>.
   const githubRepo =
-    ctxString(app, "githubRepo") ?? "alextthomas/Analyst-App-POC";
-  if (!/^[\w.-]+\/[\w.-]+$/.test(githubRepo))
-    throw new Error("Context githubRepo must be <org>/<repo>");
+    ctxString(app, "githubRepo") ??
+    "alextthomas@182850385/Analyst-App-POC@1428685040";
+  if (!/^[\w.-]+(@\d+)?\/[\w.-]+(@\d+)?$/.test(githubRepo))
+    throw new Error(
+      "Context githubRepo must be <org>/<repo> or <org>@<id>/<repo>@<id>",
+    );
   return {
     account,
     alertEmail,
@@ -108,7 +113,9 @@ export function readAppStackConfig(app: App): AppStackConfig {
     availabilityZone: ctxString(app, "availabilityZone") ?? `${REGION}a`,
     allowedCidrs,
     siteHost: ctxString(app, "siteHost"),
-    acmeCa: ctxString(app, "acmeCa") ?? "https://acme-v02.api.letsencrypt.org/directory",
+    acmeCa:
+      ctxString(app, "acmeCa") ??
+      "https://acme-v02.api.letsencrypt.org/directory",
     dataVolumeSnapshotId: snap,
     instanceType: ctxString(app, "instanceType") ?? "t3.small",
   };

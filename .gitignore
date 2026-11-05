@@ -11,3 +11,4 @@ packages/*/generated/
 apps/*/generated/
 # Keep the throwaway prototype's own ignore rules intact
 dist-seed/
+node_modules

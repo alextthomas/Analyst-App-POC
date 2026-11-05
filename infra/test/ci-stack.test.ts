@@ -12,7 +12,7 @@ describe("EaSbxCiStack", () => {
     });
   });
 
-  it("trusts exactly repo:<org>/<repo>:environment:sandbox for both roles", () => {
+  it("trusts exactly the immutable repo subject with environment:sandbox for both roles", () => {
     for (const roleName of ["ea-sbx-gha-app", "ea-sbx-gha-infra"]) {
       ci.hasResourceProperties("AWS::IAM::Role", {
         RoleName: roleName,
@@ -25,7 +25,7 @@ describe("EaSbxCiStack", () => {
                   "token.actions.githubusercontent.com:aud":
                     "sts.amazonaws.com",
                   "token.actions.githubusercontent.com:sub":
-                    "repo:alextthomas/Analyst-App-POC:environment:sandbox",
+                    "repo:alextthomas@182850385/Analyst-App-POC@1428685040:environment:sandbox",
                 },
               },
             }),

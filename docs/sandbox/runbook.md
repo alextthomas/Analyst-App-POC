@@ -19,7 +19,7 @@ Repo: `alextthomas/Analyst-App-POC`. Deploy branch: `deploy/sandbox-aws-poc`.
 
 ## 1. One-time bootstrap (owner, by hand)
 
-Preconditions: Node 22 (`.nvmrc`), `npm ci` run at the repo root, AWS CLI v2, GitHub CLI (`gh auth login`), and an admin profile for the sandbox account. Check you are in the right account first:
+Preconditions: Node 22 (`.nvmrc`), `npm ci` then `npm run prisma:generate` run at the repo root (`npm ci` deletes the generated Prisma client), AWS CLI v2, GitHub CLI (`gh auth login`), and an admin profile for the sandbox account. Check you are in the right account first:
 
 ```bash
 aws sts get-caller-identity --profile <ADMIN_PROFILE>   # Account must equal <AWS_ACCOUNT_ID>
@@ -27,8 +27,9 @@ aws sts get-caller-identity --profile <ADMIN_PROFILE>   # Account must equal <AW
 
 ### 1.1 CDK bootstrap (account has none yet)
 
+Run it from the **repo root**, not `infra/`: inside `infra/` the CLI picks up `cdk.json`, synthesises the sandbox app first and fails on the missing `alertEmail`/`amiId` context.
+
 ```bash
-cd infra
 npx cdk bootstrap aws://<AWS_ACCOUNT_ID>/us-east-1 --profile <ADMIN_PROFILE> \
   --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
 ```
@@ -68,7 +69,7 @@ Then:
      --query "Stacks[0].Outputs[].[OutputKey,OutputValue]" --output text
    ```
    `AppRoleArn`, `InfraRoleArn`, `BundleBucketName`.
-3. The OIDC trust is exactly `repo:alextthomas/Analyst-App-POC:environment:sandbox` (audience `sts.amazonaws.com`). Branch scoping is enforced by the environment deployment-branch rule in 1.4.
+3. The OIDC trust is exactly `repo:alextthomas@182850385/Analyst-App-POC@1428685040:environment:sandbox`, the immutable subject format this repo uses (check with `gh api repos/alextthomas/Analyst-App-POC/actions/oidc/customization/sub`; `sub_claim_prefix` must match) (audience `sts.amazonaws.com`). Branch scoping is enforced by the environment deployment-branch rule in 1.4.
 
 ### 1.4 GitHub environment `sandbox`
 

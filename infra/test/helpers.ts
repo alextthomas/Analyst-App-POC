@@ -8,7 +8,7 @@ export const DUMMY_CONTEXT: Record<string, unknown> = {
   account: "111111111111",
   alertEmail: "alerts@example.invalid",
   amiId: "ami-0123456789abcdef0",
-  githubRepo: "alextthomas/Analyst-App-POC",
+  githubRepo: "alextthomas@182850385/Analyst-App-POC@1428685040",
   githubEnvironment: "sandbox",
   expiresOn: "2026-12-03",
 };

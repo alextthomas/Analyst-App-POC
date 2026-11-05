@@ -498,7 +498,7 @@ Order: T1, T2, T3/T4/T5/T6 (in parallel; each owns distinct paths), T7, T8, T9, 
 | OQ-3 | **No domain**: use the D6-B `<eip-dashed>.sslip.io` fallback                                                                                                                                                                                                     |
 | OQ-4 | 443 (and 80) **open to `0.0.0.0/0`**                                                                                                                                                                                                                             |
 | OQ-5 | Alert email supplied by the owner; passed as CDK context `alertEmail` at deploy time, not committed                                                                                                                                                              |
-| OQ-6 | OIDC trust `repo:alextthomas/Analyst-App-POC:environment:sandbox` (confirmed from the git remote). `ea:expires=2026-12-03`                                                                                                                                       |
+| OQ-6 | OIDC trust `repo:alextthomas@182850385/Analyst-App-POC@1428685040:environment:sandbox` (immutable subject; the repo has `use_immutable_subject` on). `ea:expires=2026-12-03`                                                                                                                                       |
 
 ### 9.2 Original questions
 
