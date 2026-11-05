@@ -22,6 +22,8 @@ export default defineConfig({
       include: [
         'src/config.ts',
         'src/problem.filter.ts',
+        'src/logger.ts',
+        'src/auth/session-cookie.ts',
         'src/ingestion/derive.ts',
         'src/ingestion/intake.ts',
         'src/dashboard/dashboard.aggregate.ts',

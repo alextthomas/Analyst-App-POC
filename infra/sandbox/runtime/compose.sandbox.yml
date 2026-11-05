@@ -1,0 +1,179 @@
+# Sandbox runtime (ADR-SBX-001). Shipped in the per-SHA release bundle and run on the EC2 host by
+# deploy.sh. Separate from the developer docker-compose.yml, which publishes DB/NATS ports and has
+# a default password. Rules here:
+#   - only `web` publishes ports (80, 443); postgres/nats/api/ingest are internal-only
+#   - POSTGRES_PASSWORD is required (no default)
+#   - every service logs to CloudWatch via the awslogs driver (log groups are created by CDK)
+#   - base images pinned by digest; app images are immutable full-SHA tags
+# Variables come from `--env-file /run/ea/app.env` rendered by deploy.sh (tmpfs, mode 0600).
+name: ea-sbx
+
+x-app-env: &app-env
+  NODE_ENV: production
+  DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+  NATS_URL: nats://nats:4222
+  API_PORT: "8080"
+  WEB_ORIGIN: ${WEB_ORIGIN:?WEB_ORIGIN is required}
+  SESSION_COOKIE_NAME: ${SESSION_COOKIE_NAME:-__Host-ea_sid}
+  COOKIE_SECURE: ${COOKIE_SECURE:-true}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+
+services:
+  postgres:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ea
+      POSTGRES_DB: event_analytics
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - ${EA_DATA_DIR:-/data}/pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ea -d event_analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/postgres
+
+  nats:
+    image: nats:2.10-alpine@sha256:b83efabe3e7def1e0a4a31ec6e078999bb17c80363f881df35edc70fcb6bb927
+    restart: unless-stopped
+    user: "10001:10001"
+    command: ["-js", "-sd", "/data", "-m", "8222"]
+    volumes:
+      - ${EA_DATA_DIR:-/data}/nats:/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget -q -O - http://localhost:8222/healthz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/nats
+
+  # One-off: prisma migrate deploy (forward-only; see rollback runbook).
+  migrate:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/api:${IMAGE_TAG:?IMAGE_TAG is required}
+    profiles: ["ops"]
+    restart: "no"
+    command: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/ops
+
+  # One-off: guarded synthetic seed (refuses unless EA_DATA_CLASSIFICATION=synthetic).
+  seed:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/api:${IMAGE_TAG:?IMAGE_TAG is required}
+    profiles: ["ops"]
+    restart: "no"
+    command: ["node", "dist-seed/seed.js"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      EA_DATA_CLASSIFICATION: ${EA_DATA_CLASSIFICATION:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+      SEED_ANALYST_PASSWORD: ${SEED_ANALYST_PASSWORD:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/ops
+
+  api:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/api:${IMAGE_TAG:?IMAGE_TAG is required}
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    environment:
+      <<: *app-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    # Healthcheck (GET /health/ready, 503 when the DB is down) is defined in the image.
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/api
+
+  ingest:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/api:${IMAGE_TAG:?IMAGE_TAG is required}
+    restart: unless-stopped
+    command: ["node", "dist/ingestion/ingestion.standalone.js"]
+    environment:
+      <<: *app-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    # The worker has no HTTP endpoint; liveness = restart policy + CloudWatch log alarm.
+    healthcheck:
+      disable: true
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/ingest
+
+  # One-off: the only producer. NATS is not published, so this is the only way events enter.
+  emit-demo:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/api:${IMAGE_TAG:?IMAGE_TAG is required}
+    profiles: ["ops"]
+    restart: "no"
+    command: ["node", "/app/packages/producer-client/dist/demo-emit.js"]
+    environment:
+      NATS_URL: nats://nats:4222
+      COUNT: ${EMIT_COUNT:-400}
+    depends_on:
+      nats:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/ops
+
+  web:
+    image: ${ECR_REGISTRY:?ECR_REGISTRY is required}/ea-sbx/web:${IMAGE_TAG:?IMAGE_TAG is required}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?SITE_ADDRESS is required}
+      CADDY_ACME_CA: ${CADDY_ACME_CA:-https://acme-v02.api.letsencrypt.org/directory}
+    volumes:
+      # Certificates persist on the data volume (avoids Let's Encrypt rate limits across redeploys).
+      - ${EA_DATA_DIR:-/data}/caddy:/data
+    depends_on:
+      api:
+        condition: service_healthy
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-1
+        awslogs-group: /ea/sandbox/web

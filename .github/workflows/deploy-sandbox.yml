@@ -1,0 +1,196 @@
+name: Deploy sandbox
+
+# Sandbox POC deploy (ADR-SBX-001). The environment's required reviewer is the human gate;
+# agents never approve it. Authentication is GitHub OIDC only (no long-lived AWS keys).
+# Rollback: run this workflow manually with `sha` = a previously deployed full commit SHA;
+# QA and image build are skipped and only the deploy + smoke steps run for that SHA.
+
+on:
+  push:
+    branches: [deploy/sandbox-aws-poc]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "Rollback: full 40-char commit SHA that is already built and in ECR (skips QA and build)"
+        required: false
+        type: string
+      seed:
+        description: "Run the guarded synthetic seed after deploy"
+        required: false
+        type: boolean
+        default: false
+      emitDemo:
+        description: "Emit synthetic demo events after deploy"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-sandbox
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    name: QA gate
+    # Skipped for a rollback to an already-built SHA.
+    if: ${{ inputs.sha == '' || inputs.sha == null }}
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  deploy:
+    name: Build, deploy, smoke
+    needs: qa
+    # Runs after a green QA, or for a rollback (QA skipped). Never after a failed/cancelled QA.
+    if: ${{ !cancelled() && (needs.qa.result == 'success' || (needs.qa.result == 'skipped' && inputs.sha != '' && inputs.sha != null)) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: sandbox
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      TARGET_SHA: ${{ inputs.sha || github.sha }}
+      IS_ROLLBACK: ${{ inputs.sha != '' && inputs.sha != null }}
+      RUN_SEED: ${{ inputs.seed == true }}
+      RUN_EMIT: ${{ inputs.emitDemo == true }}
+      BUNDLE_BUCKET: ${{ vars.BUNDLE_BUCKET }}
+      SITE_HOST: ${{ vars.SITE_HOST }}
+      SMOKE_INSECURE: ${{ vars.SMOKE_INSECURE }}
+    steps:
+      - name: Validate configuration
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::sha must be a full 40-char lowercase commit SHA"; exit 1; }
+          for v in BUNDLE_BUCKET SITE_HOST; do
+            [[ -n "${!v}" ]] || { echo "::error::GitHub environment variable $v is not set (see docs/sandbox/runbook.md)"; exit 1; }
+          done
+          [[ -n "${{ vars.APP_ROLE_ARN }}" ]] || { echo "::error::GitHub environment variable APP_ROLE_ARN is not set"; exit 1; }
+
+      - name: Check out the release commit
+        if: ${{ env.IS_ROLLBACK != 'true' }}
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.APP_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-sbx-deploy-${{ github.run_id }}
+          role-duration-seconds: 3600
+
+      - name: Log in to ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@03f1aad4c6c7ffd436567f42f9384779290529bd # v2.1.7
+
+      - name: Set up Docker Buildx
+        if: ${{ env.IS_ROLLBACK != 'true' }}
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Build and push images (immutable SHA tags)
+        if: ${{ env.IS_ROLLBACK != 'true' }}
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          set -euo pipefail
+          exists() { aws ecr describe-images --repository-name "$1" --image-ids "imageTag=$TARGET_SHA" >/dev/null 2>&1; }
+          if exists ea-sbx/api; then
+            echo "ea-sbx/api:$TARGET_SHA already exists (immutable tags); skipping build"
+          else
+            docker buildx build -f apps/api/Dockerfile -t "$REGISTRY/ea-sbx/api:$TARGET_SHA" --push .
+          fi
+          if exists ea-sbx/web; then
+            echo "ea-sbx/web:$TARGET_SHA already exists (immutable tags); skipping build"
+          else
+            docker buildx build -f apps/web/Dockerfile --build-arg VITE_SANDBOX_BANNER=true \
+              -t "$REGISTRY/ea-sbx/web:$TARGET_SHA" --push .
+          fi
+
+      - name: Upload release bundle
+        if: ${{ env.IS_ROLLBACK != 'true' }}
+        run: |
+          set -euo pipefail
+          for f in compose.sandbox.yml deploy.sh; do
+            aws s3 cp --only-show-errors "infra/sandbox/runtime/$f" "s3://$BUNDLE_BUCKET/releases/$TARGET_SHA/$f"
+          done
+
+      - name: Verify images exist for the target SHA
+        run: |
+          set -euo pipefail
+          for repo in ea-sbx/api ea-sbx/web; do
+            aws ecr describe-images --repository-name "$repo" --image-ids "imageTag=$TARGET_SHA" >/dev/null \
+              || { echo "::error::$repo:$TARGET_SHA not found in ECR"; exit 1; }
+          done
+
+      - name: Define SSM helper
+        run: |
+          cat > "$RUNNER_TEMP/ssm.sh" <<'EOF'
+          # run_doc <document-name>: send a fixed SSM document to the tagged instance and wait for it.
+          run_doc() {
+            local doc="$1" id status i
+            id="$(aws ssm send-command --document-name "$doc" \
+              --targets "Key=tag:ea:app,Values=event-analytics-sbx" \
+              --parameters "imageTag=$TARGET_SHA" \
+              --comment "gha run ${GITHUB_RUN_ID} ${doc}" \
+              --query Command.CommandId --output text)"
+            echo "$doc command id: $id"
+            echo "- $doc: command \`$id\`" >> "$GITHUB_STEP_SUMMARY"
+            for i in $(seq 1 90); do
+              status="$(aws ssm list-command-invocations --command-id "$id" --query 'CommandInvocations[0].Status' --output text 2>/dev/null || echo Pending)"
+              case "$status" in
+                Success) echo "$doc: Success"; return 0 ;;
+                Failed|TimedOut|Cancelled|Cancelling)
+                  echo "::error::$doc finished with status $status"
+                  aws ssm list-command-invocations --command-id "$id" --details \
+                    --query 'CommandInvocations[0].CommandPlugins[0].Output' --output text || true
+                  return 1 ;;
+                *) sleep 10 ;;
+              esac
+            done
+            echo "::error::$doc timed out waiting for completion (15 min)"
+            return 1
+          }
+          EOF
+
+      - name: Deploy (EaSbx-Deploy)
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          source "$RUNNER_TEMP/ssm.sh"
+          {
+            echo "## Sandbox deploy"
+            echo "- SHA: \`$TARGET_SHA\`"
+            echo "- Rollback: $IS_ROLLBACK"
+          } >> "$GITHUB_STEP_SUMMARY"
+          run_doc EaSbx-Deploy
+
+      - name: Seed synthetic data (EaSbx-Seed)
+        if: ${{ env.RUN_SEED == 'true' }}
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          source "$RUNNER_TEMP/ssm.sh"
+          run_doc EaSbx-Seed
+
+      - name: Emit synthetic demo events (EaSbx-EmitDemo)
+        if: ${{ env.RUN_EMIT == 'true' }}
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          source "$RUNNER_TEMP/ssm.sh"
+          run_doc EaSbx-EmitDemo
+
+      - name: Smoke test
+        run: |
+          set -euo pipefail
+          opts=(-fsS --retry 12 --retry-delay 10 --retry-all-errors --max-time 20)
+          if [[ "${SMOKE_INSECURE:-}" == "true" ]]; then opts+=(-k); fi   # Let's Encrypt staging only
+          curl "${opts[@]}" "https://$SITE_HOST/health/ready" | grep -F '"status":"ok"'
+          curl "${opts[@]}" "https://$SITE_HOST/" | grep -F '<div id="root">'
+          echo "- Smoke: https://$SITE_HOST/health/ready ok, SPA served" >> "$GITHUB_STEP_SUMMARY"

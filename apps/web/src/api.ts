@@ -16,7 +16,17 @@ import type {
   TenantList,
 } from '@ea/contracts';
 
-const BASE = (import.meta.env.VITE_API_BASE as string | undefined) ?? 'http://localhost:8080';
+/**
+ * API base URL. VITE_API_BASE always wins (even when empty). Otherwise a
+ * production build is same-origin (relative paths behind the reverse proxy) and
+ * dev targets the local API.
+ */
+export function resolveApiBase(env: { VITE_API_BASE?: string; PROD: boolean }): string {
+  if (env.VITE_API_BASE !== undefined) return env.VITE_API_BASE;
+  return env.PROD ? '' : 'http://localhost:8080';
+}
+
+const BASE = resolveApiBase({ VITE_API_BASE: import.meta.env.VITE_API_BASE, PROD: import.meta.env.PROD });
 
 export class ApiError extends Error {
   constructor(

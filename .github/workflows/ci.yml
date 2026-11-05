@@ -2,12 +2,18 @@ name: CI
 
 on:
   push:
-    branches: ['**']
+    branches: ["**"]
   pull_request:
+  # Reused by deploy-sandbox.yml as its QA gate.
+  workflow_call:
 
-# Avoid redundant runs on the same ref.
+permissions:
+  contents: read
+
+# Avoid redundant runs on the same ref. github.workflow differs between a direct run ("CI")
+# and a call from deploy-sandbox.yml (the caller's name), so the two never cancel each other.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -47,14 +53,14 @@ jobs:
       # Matches docker-compose / .env.example (host port 15432).
       DATABASE_URL: postgresql://ea:ea_local_pw@localhost:15432/event_analytics?schema=control
       NATS_URL: nats://localhost:4222
-      API_PORT: '8080'
+      API_PORT: "8080"
       WEB_ORIGIN: http://localhost:5173
       API_BASE: http://localhost:8080
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -87,7 +93,7 @@ jobs:
           npm run dev:api &
           npm run ingest &
           # Wait for the API readiness probe (up to 60s).
-          for i in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             if curl -sf http://localhost:8080/health/ready > /dev/null; then
               echo "API ready"; break
             fi
@@ -99,7 +105,7 @@ jobs:
 
       - name: Upload coverage reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: coverage
           path: |

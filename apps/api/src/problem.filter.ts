@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 import type { Problem } from '@ea/contracts';
+import { errFields, logger } from './logger';
 
 /** Translates thrown exceptions into RFC 9457-style problem+json responses. */
 @Catch()
@@ -39,8 +40,7 @@ export class ProblemFilter implements ExceptionFilter {
         }
       }
     } else {
-      // eslint-disable-next-line no-console
-      console.error('Unhandled error', exception);
+      logger.error({ err: errFields(exception) }, 'Unhandled error');
     }
 
     const problem: Problem = {

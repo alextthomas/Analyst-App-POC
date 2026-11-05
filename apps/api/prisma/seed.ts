@@ -2,9 +2,12 @@
  * Seed script. Creates demo accounts, tenants, entitlements, producer
  * credentials (with the fixed ids the demo emitter uses) and allow-listed keys.
  *
- * Demo credentials (POC only - do not use anywhere real):
- *   admin / admin12345   (role admin, entitled to both tenants)
- *   analyst / analyst12345 (role user, entitled to web-portal only)
+ * Accounts: admin (role admin, both tenants) and analyst (role user, web-portal only).
+ *
+ * Secrets: with EA_DATA_CLASSIFICATION unset (local dev) the legacy demo values
+ * from seed-guard.ts apply. With EA_DATA_CLASSIFICATION=synthetic the passwords
+ * must come from SEED_ADMIN_PASSWORD / SEED_ANALYST_PASSWORD. Any other value
+ * refuses to run. No secret is ever printed.
  */
 import { config as loadDotenv } from 'dotenv';
 import { resolve } from 'node:path';
@@ -13,6 +16,7 @@ loadDotenv({ path: resolve(__dirname, '../../../.env') });
 
 import { PrismaClient } from '@prisma/client';
 import * as argon2 from 'argon2';
+import { resolveSeedSecrets, SeedGuardError } from './seed-guard';
 
 const prisma = new PrismaClient();
 
@@ -22,24 +26,23 @@ const TENANTS = [
     departmentOwner: 'Growth (example)',
     privacyNoticeUrl: 'https://example.com/privacy/web-portal',
     credentialId: '11111111-1111-1111-1111-111111111111',
-    secret: 'web-portal-demo-secret',
   },
   {
     id: 'mobile-app',
     departmentOwner: 'Mobile (example)',
     privacyNoticeUrl: 'https://example.com/privacy/mobile-app',
     credentialId: '22222222-2222-2222-2222-222222222222',
-    secret: 'mobile-app-demo-secret',
   },
 ];
 
 const ALLOWED_KEYS = ['plan', 'referrer', 'ab_variant'];
 
 async function main(): Promise<void> {
-  console.log('Seeding...');
+  const secrets = resolveSeedSecrets(process.env); // throws SeedGuardError before any DB access
+  console.log(secrets.guarded ? 'Seeding (synthetic mode)...' : 'Seeding (local mode)...');
 
-  const adminHash = await argon2.hash('admin12345');
-  const analystHash = await argon2.hash('analyst12345');
+  const adminHash = await argon2.hash(secrets.adminPassword);
+  const analystHash = await argon2.hash(secrets.analystPassword);
 
   const admin = await prisma.account.upsert({
     where: { username: 'admin' },
@@ -70,7 +73,7 @@ async function main(): Promise<void> {
       create: {
         id: t.credentialId,
         tenantId: t.id,
-        secretHash: await argon2.hash(t.secret),
+        secretHash: await argon2.hash(secrets.producerSecret(t.id)),
         status: 'active',
       },
     });
@@ -98,14 +101,14 @@ async function main(): Promise<void> {
     });
   }
 
-  console.log('Seed complete.');
-  console.log('  admin / admin12345     (admin; web-portal + mobile-app)');
-  console.log('  analyst / analyst12345 (user; web-portal only)');
+  console.log('Seed complete. Accounts: admin (web-portal + mobile-app), analyst (web-portal only).');
 }
 
 main()
-  .catch((err) => {
-    console.error(err);
+  .catch((err: unknown) => {
+    // Print only a short message: errors can embed query arguments.
+    const message = err instanceof SeedGuardError ? err.message : `Seed failed: ${err instanceof Error ? err.name : 'unknown error'}`;
+    console.error(message);
     process.exit(1);
   })
   .finally(() => prisma.$disconnect());

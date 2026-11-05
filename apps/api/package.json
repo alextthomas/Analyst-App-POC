@@ -4,7 +4,7 @@
   "private": true,
   "description": "Event Analytics API (NestJS) + NATS ingestion worker.",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && npm run build:seed",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
     "start": "node dist/main.js",
@@ -14,8 +14,13 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "ts-node prisma/seed.ts",
     "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "test:integration": "vitest run test/integration",
     "test:watch": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test:cov": "vitest run --coverage",
+    "build:seed": "tsc -p tsconfig.seed.json",
+    "start:ingest:prod": "node dist/ingestion/ingestion.standalone.js",
+    "db:seed:prod": "node dist-seed/seed.js"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -32,6 +37,10 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "nats": "^2.28.2",
+    "nestjs-pino": "^4.6.1",
+    "pino": "^9.14.0",
+    "pino-http": "^10.5.0",
+    "prisma": "5.22.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
@@ -40,10 +49,9 @@
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
-    "prisma": "^5.22.0",
+    "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^2.1.9",
     "supertest": "^7.0.0",
-    "@types/supertest": "^6.0.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",

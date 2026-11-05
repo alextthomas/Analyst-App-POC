@@ -7,6 +7,7 @@ import { CurrentSession } from './current-session.decorator';
 import { Public } from './auth.guard';
 import type { AuthedSession } from './auth.service';
 import { config } from '../config';
+import { clearSessionCookie, setSessionCookie } from './session-cookie';
 
 class SignInDto {
   @IsString()
@@ -18,16 +19,6 @@ class SignInDto {
   @MinLength(1)
   @MaxLength(128)
   password!: string;
-}
-
-function setSessionCookie(res: Response, value: string, maxAgeMs: number): void {
-  res.cookie(config.sessionCookieName, value, {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: false, // local http; the design uses Secure + __Host- prefix over HTTPS.
-    path: '/',
-    maxAge: maxAgeMs,
-  });
 }
 
 @Controller('api/v1/auth')
@@ -70,6 +61,6 @@ export class AuthController {
   async signOut(@Req() req: Request, @Res({ passthrough: true }) res: Response): Promise<void> {
     const cookieValue = req.cookies?.[config.sessionCookieName] as string | undefined;
     await this.auth.destroySession(cookieValue);
-    res.clearCookie(config.sessionCookieName, { path: '/' });
+    clearSessionCookie(res);
   }
 }

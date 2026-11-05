@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { LoggerModule } from 'nestjs-pino';
+import { loggerOptions } from './logger';
 import { PrismaService } from './prisma.service';
 import { ProblemFilter } from './problem.filter';
 import { AuthGuard } from './auth/auth.guard';
@@ -13,6 +15,22 @@ import { AdminController } from './admin/admin.controller';
 import { HealthController } from './health.controller';
 
 @Module({
+  imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        ...loggerOptions(),
+        // Log only method/url path/status; no headers or bodies are serialised.
+        serializers: {
+          req: (req: { id?: unknown; method?: string; url?: string }) => ({
+            id: req.id,
+            method: req.method,
+            url: (req.url ?? '').split('?')[0],
+          }),
+          res: (res: { statusCode?: number }) => ({ statusCode: res.statusCode }),
+        },
+      },
+    }),
+  ],
   controllers: [AuthController, DashboardController, AdminController, HealthController],
   providers: [
     PrismaService,

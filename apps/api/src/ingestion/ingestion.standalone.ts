@@ -10,6 +10,7 @@ import type { DeadLetterReason } from '@ea/contracts';
 import { config } from '../config';
 import { parseEnvelope, processEvent } from './intake';
 import { utcDay } from './derive';
+import { errFields, logger } from '../logger';
 
 const prisma = new PrismaClient();
 
@@ -91,8 +92,7 @@ async function handleMessage(subject: string, data: Uint8Array): Promise<void> {
     }
   } catch (err) {
     // Unexpected failure: dead-letter as schema_violation so nothing is lost silently.
-    // eslint-disable-next-line no-console
-    console.error('intake error', err);
+    logger.error({ err: errFields(err) }, 'intake error');
     await deadLetter(subjectTenantId, credentialId, 'schema_violation');
   }
 }
@@ -100,8 +100,7 @@ async function handleMessage(subject: string, data: Uint8Array): Promise<void> {
 async function main(): Promise<void> {
   await prisma.$connect();
   const nc: NatsConnection = await connect({ servers: config.natsUrl, name: 'ea-ingest' });
-  // eslint-disable-next-line no-console
-  console.log(`Ingestion worker connected to ${config.natsUrl}; subscribing to ingest.*.*`);
+  logger.info('Ingestion worker connected to NATS; subscribing to ingest.*.*');
   const sub: Subscription = nc.subscribe('ingest.*.*');
 
   // Avoid 'unused import' and document the daily partition concept in the full design.
@@ -109,15 +108,13 @@ async function main(): Promise<void> {
 
   for await (const msg of sub) {
     await handleMessage(msg.subject, msg.data).catch((err) => {
-      // eslint-disable-next-line no-console
-      console.error('handler error', err);
+      logger.error({ err: errFields(err) }, 'handler error');
     });
   }
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
-  console.error('Ingestion worker failed', err);
+  logger.error({ err: errFields(err) }, 'Ingestion worker failed');
   process.exit(1);
 });
 

@@ -8,13 +8,15 @@
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "infra"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:unit": "npm run test:unit --workspaces --if-present",
     "test:cov": "npm run test:cov --workspaces --if-present",
     "test:api": "npm run test -w @ea/api",
     "test:web": "npm run test -w @ea/web",

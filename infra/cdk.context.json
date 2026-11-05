@@ -1,0 +1,3 @@
+{
+  "_comment": "No account id, alert email or AMI id is committed. Pass: -c account=<AWS_ACCOUNT_ID> (or CDK_DEFAULT_ACCOUNT), -c alertEmail=<ALERT_EMAIL>, -c amiId=<pinned AL2023 AMI id>. See docs/sandbox/runbook.md."
+}

@@ -422,3 +422,11 @@ thead th {
   vertical-align: middle;
   margin-right: 4px;
 }
+
+.sandbox-banner {
+  background: #7a2e00;
+  color: #fff;
+  padding: 6px 12px;
+  text-align: center;
+  font-weight: 600;
+}

@@ -1,0 +1,48 @@
+# Sandbox Caddyfile (baked into the web image). SITE_ADDRESS is the sslip.io host
+# derived from the Elastic IP; Caddy obtains the Let's Encrypt certificate itself and
+# redirects HTTP to HTTPS. For a local smoke test set SITE_ADDRESS=:80 (plain HTTP).
+{
+	# Set CADDY_ACME_CA to the LE staging directory for the first rollout:
+	# https://acme-staging-v02.api.letsencrypt.org/directory
+	acme_ca {$CADDY_ACME_CA:https://acme-v02.api.letsencrypt.org/directory}
+}
+
+{$SITE_ADDRESS} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		# style-src allows inline style attributes used by the React screens.
+		Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"
+		-Server
+	}
+
+	# Access log: JSON, no query strings, no cookies or tokens (PII rule).
+	log {
+		output stdout
+		format filter {
+			wrap json
+			fields {
+				request>uri regexp \?.* ""
+				request>headers>Cookie delete
+				request>headers>Authorization delete
+				request>headers>X-Csrf-Token delete
+				resp_headers>Set-Cookie delete
+			}
+		}
+	}
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+	handle /health/* {
+		reverse_proxy api:8080
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

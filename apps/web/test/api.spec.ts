@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { api, ApiError, setCsrfToken } from '../src/api';
+import { api, ApiError, resolveApiBase, setCsrfToken } from '../src/api';
 
 /** Capture fetch calls and return a canned response. */
 function mockFetch(response: { status: number; body?: unknown }) {
@@ -81,5 +81,20 @@ describe('api client', () => {
   it('returns undefined for a 204 response', async () => {
     mockFetch({ status: 204 });
     await expect(api.signOut()).resolves.toBeUndefined();
+  });
+});
+
+describe('resolveApiBase', () => {
+  it('is same-origin (empty) in a production build with no override', () => {
+    expect(resolveApiBase({ PROD: true })).toBe('');
+  });
+
+  it('targets the local API in dev with no override', () => {
+    expect(resolveApiBase({ PROD: false })).toBe('http://localhost:8080');
+  });
+
+  it('lets VITE_API_BASE override in both modes, including an empty value', () => {
+    expect(resolveApiBase({ PROD: true, VITE_API_BASE: 'https://api.example.test' })).toBe('https://api.example.test');
+    expect(resolveApiBase({ PROD: false, VITE_API_BASE: '' })).toBe('');
   });
 });
