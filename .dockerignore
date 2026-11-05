@@ -1,0 +1,19 @@
+# Keep secrets, VCS data, caches and build output out of every image context.
+.git
+.github
+.worktrees
+.claude
+.sdlc
+**/.env
+**/.env.*
+**/node_modules
+**/dist
+**/dist-seed
+**/coverage
+**/cdk.out
+**/*.log
+.DS_Store
+reports
+prototypes
+docs
+scripts

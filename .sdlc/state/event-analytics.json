@@ -3,7 +3,7 @@
   "tier": 3,
   "tier_note": "Proposed from charter (PII in events); confirmed by Engineering Lead at HG-4",
   "phase": "P4",
-  "status": "in-progress:P4 + HG-C-4",
+  "status": "in-progress:P4 design review round 1",
   "branch": "docs/hg-2-ux-event-analytics",
   "ui_in_scope": true,
   "artifacts": {
@@ -18,13 +18,13 @@
     },
     "prd": {
       "path": "docs/requirements/event-analytics.md",
-      "revision": 13,
-      "sha": "989d367"
+      "revision": 14,
+      "sha": "28f8ae1"
     },
     "ux": {
       "path": "docs/ux/event-analytics.md",
-      "revision": 4,
-      "sha": "989d367"
+      "revision": 5,
+      "sha": "28f8ae1"
     },
     "prototype": {
       "path": "prototypes/event-analytics/",
@@ -91,20 +91,17 @@
       "scope": "PRD rev 13 + UX rev 4"
     },
     "HG-C-4": {
-      "status": "awaiting",
-      "branch": "docs/hg-c-4-q52-55",
-      "scope": "PRD rev 14 + UX rev 5 applying Q-52..Q-55",
-      "open_questions": [
-        "Q-56 (retention of non-access request-list entries; proposed 7 days from request)"
-      ],
-      "sha": "117d252",
-      "record": "PR #9"
+      "status": "approved",
+      "sha": "e2fa097",
+      "decided_by": "alextthomas",
+      "record": "PR #9 review APPROVED 2026-10-29, body \"Approved accept defaults\" (Q-56 default: non-access request entries kept 7 days from request time); merged 28f8ae1",
+      "scope": "PRD rev 14 + UX rev 5"
     }
   },
-  "review_rounds": 0,
+  "review_rounds": 1,
   "prd_review_rounds": 4,
   "open_blocking_findings": 0,
-  "head_sha": "989d367",
+  "head_sha": "28f8ae1",
   "audit_notes": [
     "d808267 (CODEOWNERS, role register, .claude/) pushed directly to main before protection, authored under the repo-local alextthomasagent identity; Engineering Lead to confirm human authorship (proposed role-register deviation D-5)",
     "D-5 recorded in role register via PR #2 (approved by alextthomas, merged 520fa94); resolves CR-023 pending reviewer re-verification",
@@ -113,25 +110,74 @@
     "Prototype gap list (10 items) from prior session was not persisted; developer re-deriving to reports/ux/event-analytics-prototype-gaps.md",
     "HG-2 approved on PR #7 although the PR body stated it was not ready: human click-through of the prototype not run, independent UX review not run, prototype defects D-1..D-8 unfixed, 33 questions answered by blanket \"accept defaults\". Recorded as approver decision; evidence gap carried forward.",
     "2026-10-29 Engineering/Product Owner (alextthomas, in chat) chose to drop the HG-2 evidence gap: no prototype refresh, D-1..D-8 not fixed, no click-through. Prototype stays at c749551 (UX rev 2) as a historical artifact.",
-    "P4 started in parallel with HG-C-4: architect given Q-52..Q-55 answers (approved at PR #8) directly; design must be re-checked against PRD rev 14 once HG-C-4 merges."
+    "P4 started in parallel with HG-C-4: architect given Q-52..Q-55 answers (approved at PR #8) directly; design must be re-checked against PRD rev 14 once HG-C-4 merges.",
+    "2026-11-03 Owner (alextthomas, in chat) disclosed app code 185f563 was written outside P5-P8 and chose to deploy it as an AWS sandbox POC under a declared exception (draft EX-001, HG-X pending): synthetic data only, single EC2 + docker compose, CDK, GitHub OIDC, us-east-1. Formal P4 design review continues unchanged.",
+    "2026-11-04 Owner chose no Architect/Critical review for sandbox app-code fixes SBX-T3..T6 (covered by EX-001)."
   ],
-  "updated_at": "2026-10-29T21:35:16.933Z",
+  "updated_at": "2026-11-05T02:41:47.470Z",
   "open_nonblocking_findings": 12,
-  "tracked_medium_findings_needing_owner": [
-    "CR-event-analytics-029",
-    "CR-event-analytics-036",
-    "CR-event-analytics-048"
-  ],
   "pending": [
-    "HG-C-4 PR: PO review incl. Q-56",
-    "solution-architect: ADRs, openapi.yaml, event contract, data model — running",
-    "Then: Spectral lint; architect-reviewer + critical-reviewer in parallel on design SHA",
-    "PO: owner/due phase for CR-029, CR-036, CR-048 on PR #3"
+    "architect-reviewer + critical-reviewer round 1 on 576df1e — running",
+    "Then: save reports, merge findings, route blocking to solution-architect",
+    "Collect PO/HG-C items: OQ-D-1..13, PRD infeasibilities, Q-56 fold-in",
+    "Add repo Spectral ruleset (Phase 6 scaffold)"
   ],
   "design": {
     "branch": "design/event-analytics",
     "worktree": ".worktrees/design",
-    "base": "989d367",
-    "status": "solution-architect running"
+    "design_sha": "7c44431",
+    "review_sha": "576df1e",
+    "base": "28f8ae1",
+    "spectral": "reports/contract/event-analytics-spectral-7c44431.txt — 0 errors (openapi 43 warnings; asyncapi 4 warnings, 2 info); built-in rulesets, no repo ruleset",
+    "open_questions": "OQ-D-1..OQ-D-13 (design doc)",
+    "prd_infeasibilities": [
+      "AC-8.8 legit admin sign-in under global throttle",
+      "step-up lockout vs AC-8.3",
+      "AC-15.8 >1MiB refused by broker not dead-lettered",
+      "AC-14.6 off-by-one (CR-044)",
+      "NFR-26 RPO 0 on single host"
+    ],
+    "spikes": [
+      "NATS callout expiry disconnect",
+      "server advisory content for refusal counting"
+    ]
+  },
+  "decided_not_yet_in_prd": [
+    {
+      "id": "Q-56",
+      "answer": "7 days from request time for erasure/objection/restriction request-list entries",
+      "record": "PR #9 review",
+      "fold_into": "next HG-C (with any HG-3 design-driven PRD changes)"
+    }
+  ],
+  "tracked_medium_findings": {
+    "record": "PR #3 comment by alextthomas 2026-10-29T21:49:17Z",
+    "items": {
+      "CR-event-analytics-029": {
+        "owner": "Security Lead",
+        "due": "Phase 4, before HG-3"
+      },
+      "CR-event-analytics-036": {
+        "owner": "Security Lead",
+        "due": "Phase 4, before HG-3"
+      },
+      "CR-event-analytics-048": {
+        "owner": "Solution Architect",
+        "due": "Phase 4, before HG-3"
+      }
+    }
+  },
+  "sandbox": {
+    "branch": "deploy/sandbox-aws-poc",
+    "base": "185f563",
+    "exception": {
+      "id": "EX-001",
+      "status": "draft, awaiting human commit + CODEOWNERS approval",
+      "expires": "2026-12-03"
+    },
+    "design": {
+      "path": "docs/sandbox/aws-poc-deployment.md",
+      "status": "written by solution-architect; owner answered OQ-1..6 on 2026-11-04 (app-code fixes covered by EX-001, no review; sslip.io; 443 open; expires 2026-12-03)"
+    }
   }
 }

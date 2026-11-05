@@ -1,0 +1,101 @@
+name: Infra sandbox
+
+# CDK diff / deploy of EaSbxAppStack only. EaSbxCiStack (OIDC provider, deploy roles, alerts,
+# budget) is deployed once by the owner by hand and is deliberately out of reach of this role.
+# The environment's required reviewer is the human gate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Deploy after the diff (false = diff only)"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: infra-sandbox
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  infra:
+    name: cdk diff / deploy EaSbxAppStack
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: sandbox
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      CDK_ACCOUNT: ${{ vars.AWS_ACCOUNT_ID }}
+      CDK_ALERT_EMAIL: ${{ vars.ALERT_EMAIL }}
+      CDK_AMI_ID: ${{ vars.AMI_ID }}
+      CDK_ALLOWED_CIDRS: ${{ vars.ALLOWED_CIDRS }}
+      CDK_SITE_HOST: ${{ vars.SITE_HOST_OVERRIDE }}
+      CDK_ACME_CA: ${{ vars.ACME_CA }}
+      CDK_DATA_SNAPSHOT_ID: ${{ vars.DATA_VOLUME_SNAPSHOT_ID }}
+    steps:
+      - name: Validate configuration
+        run: |
+          set -euo pipefail
+          for v in CDK_ACCOUNT CDK_ALERT_EMAIL CDK_AMI_ID; do
+            [[ -n "${!v}" ]] || { echo "::error::GitHub environment variable for $v is not set (AWS_ACCOUNT_ID / ALERT_EMAIL / AMI_ID)"; exit 1; }
+          done
+          [[ -n "${{ vars.INFRA_ROLE_ARN }}" ]] || { echo "::error::INFRA_ROLE_ARN is not set"; exit 1; }
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --workspace=infra --include-workspace-root
+
+      - name: Test and synthesize (no AWS access needed)
+        working-directory: infra
+        run: |
+          set -euo pipefail
+          npm test
+          npx cdk synth --quiet --no-version-reporting --no-notices -c account="$CDK_ACCOUNT" -c alertEmail="$CDK_ALERT_EMAIL" -c amiId="$CDK_AMI_ID"
+
+      - name: Configure AWS credentials (OIDC, infra role)
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.INFRA_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-sbx-infra-${{ github.run_id }}
+          role-duration-seconds: 3600
+
+      - name: Build CDK context arguments
+        run: |
+          set -euo pipefail
+          args=(-c "account=$CDK_ACCOUNT" -c "alertEmail=$CDK_ALERT_EMAIL" -c "amiId=$CDK_AMI_ID")
+          [[ -z "$CDK_ALLOWED_CIDRS" ]] || args+=(-c "allowedCidrs=$CDK_ALLOWED_CIDRS")
+          [[ -z "$CDK_SITE_HOST" ]] || args+=(-c "siteHost=$CDK_SITE_HOST")
+          [[ -z "$CDK_ACME_CA" ]] || args+=(-c "acmeCa=$CDK_ACME_CA")
+          [[ -z "$CDK_DATA_SNAPSHOT_ID" ]] || args+=(-c "dataVolumeSnapshotId=$CDK_DATA_SNAPSHOT_ID")
+          printf '%s\0' "${args[@]}" > "$RUNNER_TEMP/cdk-args"
+
+      - name: cdk diff
+        working-directory: infra
+        run: |
+          set -euo pipefail
+          mapfile -d '' args < "$RUNNER_TEMP/cdk-args"
+          npx cdk diff EaSbxAppStack --exclusively --no-version-reporting --no-notices "${args[@]}" | tee "$RUNNER_TEMP/diff.txt" || true
+          { echo '## cdk diff EaSbxAppStack'; echo '```'; head -c 60000 "$RUNNER_TEMP/diff.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: cdk deploy
+        if: ${{ inputs.apply == true }}
+        working-directory: infra
+        run: |
+          set -euo pipefail
+          mapfile -d '' args < "$RUNNER_TEMP/cdk-args"
+          npx cdk deploy EaSbxAppStack --exclusively --require-approval never --no-version-reporting --no-notices "${args[@]}"

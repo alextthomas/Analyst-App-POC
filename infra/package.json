@@ -1,0 +1,26 @@
+{
+  "name": "@ea/infra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AWS CDK app for the sandbox POC (ADR-SBX-001). Expires 2026-12-03.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:cov": "vitest run",
+    "cdk": "cdk",
+    "synth": "cdk synth"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.275.0",
+    "constructs": "10.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "aws-cdk": "2.1147.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.9"
+  }
+}

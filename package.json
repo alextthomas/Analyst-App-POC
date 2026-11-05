@@ -1,0 +1,45 @@
+{
+  "name": "event-analytics-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Event Analytics Platform - runnable POC vertical slice (MFA skipped, single Postgres two schemas, GDPR/audit/RLS deferred).",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "infra"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:unit": "npm run test:unit --workspaces --if-present",
+    "test:cov": "npm run test:cov --workspaces --if-present",
+    "test:api": "npm run test -w @ea/api",
+    "test:web": "npm run test -w @ea/web",
+    "dev:api": "npm run dev -w @ea/api",
+    "dev:web": "npm run dev -w @ea/web",
+    "prisma:generate": "npm run prisma:generate -w @ea/api",
+    "db:migrate": "npm run db:migrate -w @ea/api",
+    "db:seed": "npm run db:seed -w @ea/api",
+    "ingest": "npm run start:ingest -w @ea/api",
+    "demo:emit": "npm run emit -w @ea/producer-client",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "start:api": "powershell -ExecutionPolicy Bypass -File scripts/start-api.ps1",
+    "start:web": "powershell -ExecutionPolicy Bypass -File scripts/start-web.ps1",
+    "qa": "powershell -ExecutionPolicy Bypass -File scripts/qa.ps1",
+    "setup": "npm ci && npm run infra:up && npm run prisma:generate && npm run db:migrate && npm run db:seed && npm run build"
+  },
+  "allowScripts": {
+    "@prisma/client@5.22.0": true,
+    "@prisma/engines@5.22.0": true,
+    "argon2@0.41.1": true,
+    "prisma@5.22.0": true,
+    "esbuild@0.21.5": true,
+    "@swc/core": true
+  }
+}
